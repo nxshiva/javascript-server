@@ -6,6 +6,7 @@ function check(number){
     return true;
 }
 function diamond(number){
+console.log("Diamond pattern \n");
 for(let i=0;i<number;i++) {
 for(let j = number-1; j > i; j--){
 process.stdout.write(" ");
@@ -19,7 +20,7 @@ process.stdout.write('\n');
 }
 
 for(let i = number; i > 0; i--) {
-for(j = number; j > i; j--){
+for(let j = number; j > i; j--){
 process.stdout.write(" ");
 }
 
@@ -48,7 +49,7 @@ const rl = readline.createInterface({
        }
     });
 }
-function diamondPattern(num){
+export default function diamondPattern(num){
     if(check(num)){
         diamond(num)
     }
@@ -56,4 +57,4 @@ function diamondPattern(num){
         askAgain()
     }
 }
-diamondPattern(num);
+//diamondPattern(num);

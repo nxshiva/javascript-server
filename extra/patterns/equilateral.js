@@ -6,6 +6,7 @@ function check(number){
     return true;
 }
 function equilateral(num){
+console.log("Equilateral pattern \n");
     for(let i=0;i<num;i++){
         for(let j=i;j<num-1;j++){
             process.stdout.write(" ")
@@ -34,7 +35,7 @@ const rl = readline.createInterface({
        }
     });
 }
-function equilateralPattern(num){
+export default function equilateralPattern(num){
     if(check(num)){
         equilateral(num)
     }
@@ -42,4 +43,4 @@ function equilateralPattern(num){
         askAgain()
     }
 }
-equilateralPattern(num);
+//equilateralPattern(num);
