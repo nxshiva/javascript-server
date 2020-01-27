@@ -6,6 +6,7 @@ function check(number){
     return true;
 }
 function diamond(number){
+console.log("Diamond pattern \n");
 for(let i=0;i<number;i++) {
 for(let j = number-1; j > i; j--){
 process.stdout.write(" ");

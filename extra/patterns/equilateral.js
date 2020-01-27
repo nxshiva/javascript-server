@@ -6,6 +6,7 @@ function check(number){
     return true;
 }
 function equilateral(num){
+console.log("Equilateral pattern \n");
     for(let i=0;i<num;i++){
         for(let j=i;j<num-1;j++){
             process.stdout.write(" ")
