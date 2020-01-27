@@ -34,7 +34,7 @@ const rl = readline.createInterface({
        }
     });
 }
-function equilateralPattern(num){
+export default function equilateralPattern(num){
     if(check(num)){
         equilateral(num)
     }
@@ -42,4 +42,4 @@ function equilateralPattern(num){
         askAgain()
     }
 }
-equilateralPattern(num);
+//equilateralPattern(num);
