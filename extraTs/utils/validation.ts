@@ -1,5 +1,5 @@
 //import { users } from './../constants.js';
-import { validateEmail } from './helpers.js';
+import { validateEmail } from './helpers';
 let valid=0, invalid=0;
 export default function validateUsers(users : Array<Iusers>) : void{
  
