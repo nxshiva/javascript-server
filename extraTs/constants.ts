@@ -3,9 +3,9 @@ export let permission : Ipermission = {
     all: ['head-trainer'],
     read : ['trainee', 'trainer'],
     write : ['trainer'],
-    delete: [],
+    delete: [], 
     }
-}
+} 
 
 export let users : Array<Iusers> =[
     {
