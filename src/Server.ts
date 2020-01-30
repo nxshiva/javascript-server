@@ -5,15 +5,6 @@ import errorHandler from './libs/routes/errorHandler';
 import notFoundRoutes from './libs/routes/notFoundRoute';
 import { Request } from 'express';
 
-interface User {
-    name: string;
-    id: string;
-}
-
-interface NewRequest extends Request {
-    user: User;
-}
-
 class Server {
     private app: express.Express;
 
@@ -59,14 +50,11 @@ class Server {
             res.send('I am OK');
         });
 
-        app.use('/api', (req: NewRequest, res, next) => {
+        app.use('/api', (req, res, next) => {
             console.log('Inside Middleware');
-            req.user = {
-                id: '1',
-                name: 'Node'
-            };
-            console.log(req.user);
-            res.send('ok');
+            
+            console.log(req.body);
+            res.send(req.body);
         });
 
         app.use(notFoundRoutes);
