@@ -1,4 +1,4 @@
-interface Iconfig{
+interface Iconfig {
 
     port: string;
     env: string;
