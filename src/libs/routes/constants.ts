@@ -1,12 +1,12 @@
-export let permission= {
+export let permission = {
     'getUsers': {
     read : ['trainee', 'trainer', 'head-trainer'],
     write : ['trainer', 'head-trainer'],
-    delete: ['head-trainer'],
+    delete: ['head-trainer'], 
     }
-}
+} 
 
-export let users=[
+export let users =[
     {
     traineeEmail: 'trainee1@successive.tech',
     reviewerEmail: 'reviewer1@successive.tech',

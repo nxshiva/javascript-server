@@ -26,7 +26,6 @@ export default function (config) {
 
         //console.log('The config is', config);
         const arrayName = [];
-        //console.log(req);
         const configKeys = Object.keys(config);
         console.log(configKeys);
         console.log(req.method);
@@ -134,8 +133,6 @@ export default function (config) {
                     console.log(deleteKeys);
                     deleteKeys.forEach(element => {
                         config.delete[element].in.map((value) => {
-                            console.log(value);
-                            console.log(req.params);
                             if (!(req[value][element] === undefined)) {
                                 console.log(`${element} is there`);
                             }
@@ -143,8 +140,8 @@ export default function (config) {
                             else {
                                 arrayName.push(config.delete[element].errorMessage.idError);
                             }
-
                         })
+                    
 
                     });
                 }
@@ -154,6 +151,7 @@ export default function (config) {
         else {
             console.log("error")
         }
+
         return next(arrayName);
-    }
+    };
 }

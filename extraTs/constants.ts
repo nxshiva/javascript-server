@@ -1,9 +1,8 @@
 export let permission : Ipermission = {
     'getUsers': {
-    all: ['head-trainer'],
-    read : ['trainee', 'trainer'],
-    write : ['trainer'],
-    delete: [], 
+    read : ['trainee', 'trainer', 'head-trainer'],
+    write : ['trainer', 'head-trainer'],
+    delete: ['head-trainer'], 
     }
 } 
 
