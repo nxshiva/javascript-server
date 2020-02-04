@@ -10,13 +10,13 @@ const validation = {
                 idError: {
                     error: "Id is required",
                     message: "Id is required",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
                     error: "ID and name should be of string type",
                     message: "ID and name should be of string type",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             },
@@ -35,13 +35,13 @@ const validation = {
                 nameError: {
                     error: "Name is required",
                     message: "Name is required",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
                     error: "Regex did not match",
                     message: "Regex did not match",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             }
@@ -54,7 +54,7 @@ const validation = {
                 idError: {
                     error: "Id is required",
                     message: "Id is required",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             },
@@ -71,7 +71,7 @@ const validation = {
                 typeError: {
                     error: "Skip should be of type number",
                     message: "Skip should be of type number",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             }
@@ -85,7 +85,7 @@ const validation = {
                 typeError: {
                     error: "Limit should be of type number",
                     message: "Limit should be of type number",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             }
@@ -100,13 +100,13 @@ const validation = {
                 idError: {
                     error: "Id is required",
                     message: "Id is required",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
                     error: "ID should be of string type and dataToUpadte should be of type object",
                     message: "ID should be of string type and dataToUpadte should be of type object",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             }
@@ -119,11 +119,16 @@ const validation = {
                 dataToUpdateError: {
                     error: "dataToUpdate is required",
                     message: "dataToUpdate is required",
-                    timestamp: "Date over here",
+                    timestamp: new Date(),
                     status: 500,
                 }
             },
-            custom: function (dataToUpdate) { },
+            custom: function (dataToUpdate) { 
+                console.log('Value', dataToUpdate);
+                throw {
+                    error: 'Error Occured', message: 'Message'
+                }
+            },
         }
     }
 }
