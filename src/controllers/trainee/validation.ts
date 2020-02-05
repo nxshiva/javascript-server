@@ -7,7 +7,7 @@ const validation = {
             string: true,
             in: ['body'],
             errorMessage: {
-                idError: {
+                Error: {
                     error: "Id is required",
                     message: "Id is required",
                     timestamp: new Date(),
@@ -21,7 +21,7 @@ const validation = {
                 }
             },
             custom: function (value) {
-                console.log('Value', value);
+                console.log('Value', value); 
                 throw {
                     error: 'Error Occured', message: 'Message'
                 }
@@ -32,7 +32,7 @@ const validation = {
             regex: /^[A-Z][a-z]{2,30}$/,
             in: ['body'],
             errorMessage: {
-                nameError: {
+                Error: {
                     error: "Name is required",
                     message: "Name is required",
                     timestamp: new Date(),
@@ -97,7 +97,7 @@ const validation = {
             string: true,
             in: ['body'],
             errorMessage: {
-                idError: {
+                Error: {
                     error: "Id is required",
                     message: "Id is required",
                     timestamp: new Date(),
@@ -116,9 +116,15 @@ const validation = {
             required: true,
             isObject: true,
             errorMessage: {
-                dataToUpdateError: {
+                Error: {
                     error: "dataToUpdate is required",
                     message: "dataToUpdate is required",
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: "ID should be of string type and dataToUpadte should be of type object",
+                    message: "ID should be of string type and dataToUpadte should be of type object",
                     timestamp: new Date(),
                     status: 500,
                 }
