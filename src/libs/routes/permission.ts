@@ -8,7 +8,7 @@ export default function hasPermission(moduleName : string, role : string, permis
         if(permission[moduleName][permissionType][i].match(role)){
             return true;
         }
-    }
+    } 
     return false;
 }  
 //console.log(hasPermission(moduleName, role, permissionType));

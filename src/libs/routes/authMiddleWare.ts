@@ -7,7 +7,7 @@ export default (module, permissionType) => (req: Request, res:Response, next:Nex
 
     try{
     console.log(":::::::::::AUTHMIDDLEWARE::::::::::::::::", module, permissionType);
-    const token:string = req.headers.authorization;
+    const token:string = req.headers["authorization"];
     const { secretKey } = config;
 
     const decodeUser = jwt.verify(token, secretKey);
