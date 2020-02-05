@@ -16,7 +16,7 @@ export default (module, permissionType) => (req: Request, res:Response, next:Nex
             status: 403,
             error: 'Unauthorized Access' ,
             message: 'Unauthorized Access',
-        })
+        }) 
     }
 
     if(!hasPermission(module, decodeUser['role'], permissionType)){
@@ -36,9 +36,4 @@ export default (module, permissionType) => (req: Request, res:Response, next:Nex
             message: error.message,
         });
     }
-
-
-
-
-
 }
