@@ -1,5 +1,5 @@
 export let permission = {
-    'getUsers': {
+    'getUsers': { 
     read : ['trainee', 'trainer', 'head-trainer'], 
     write : ['trainer', 'head-trainer'],
     delete: ['head-trainer'], 
