@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { UserRepository } from './../../repositories/user/UserRepository'
 import SystemResponse from '../../libs/SystemResponse'
+import IRequest from './../../libs/routes/IRequest'
+
 class UserController {
     static instance: UserController;
     static userRepository: UserRepository;
@@ -20,10 +22,10 @@ class UserController {
 
         console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
-        const { emails, name, address, hobbies, dob, mobileNumber } = req.body;
+        const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
 
         this.userRepository.create({
-            emails, name, address, hobbies, dob, mobileNumber
+            emails, name, address, hobbies, dob, mobileNumber, role
         }).then(user => {
             return SystemResponse.success(res, user, 'trainee added successfully');
         }).catch(error => {
@@ -57,7 +59,7 @@ class UserController {
         //const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
         this.userRepository.update({ _id:id }, dataToUpdate).then(user => {
-            this.userRepository.findOne({_id:id}).then(user => {
+            this.userRepository.findone({_id:id}).then(user => {
                 return SystemResponse.success(res, user, 'Updated user');
             }).catch(error => {
                 throw error 

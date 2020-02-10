@@ -11,8 +11,16 @@
          this.userModel = userModel;
      }
 
-     create = (data: IUserCreate) => {
-         return this.userModel.create(data);
+     private generateObjectId() {
+         return String(mongoose.Types.ObjectId());
+     }
+
+     create = (data) => {
+        const userData = {
+            _id: this.generateObjectId(),
+            ...data
+        }
+         return this.userModel.create(userData);
      }
 
      count = () => {
@@ -20,8 +28,9 @@
          return this.userModel.countDocuments();
      }
 
-     findOne = (data) => {
-         return this.userModel.findById(data);
+     findone = (query) => {
+         console.log(query)
+         return this.userModel.findOne(query);
      }
 
      update = (id, data) => {

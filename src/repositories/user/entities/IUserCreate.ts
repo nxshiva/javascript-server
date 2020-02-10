@@ -5,5 +5,6 @@ export default interface IUserCreate {
     emails: string
     dob: Date
     mobileNumber: number
+    role:string
     hobbies: string[]
 }

@@ -9,6 +9,7 @@ export default () => {
         dob: new Date('12/27/1993'),
         emails: 'vinay@nodeexperts.com',
         mobileNumber: 9718223533,
+        role:"head-trainer",
         hobbies: ['Touring']
     };
 
