@@ -24,7 +24,8 @@ function validate(config, req, res, next, value, element, arrayName){
         (config.name.regex.test(req[value][element])) ? console.log("Regex validation is right") : arrayName.push(config[element].errorMessage.regexError);
     }
     if(config[element].number){
-        (Number.isInteger(req[value][element])) ? (console.log(isNaN(req[value][element])),console.log(`${element} is of type number`), req[value][element] = parseInt(req[value][element])) : arrayName.push(config[element].errorMessage.typeError);
+        console.log(typeof req[value][element]);
+        (!isNaN(req[value][element])) ? (console.log(isNaN(req[value][element])),console.log(`${element} is of type number`), req[value][element] = parseInt(req[value][element])) : arrayName.push(config[element].errorMessage.typeError);
     }
     if(config[element].isObject){
         (isObject(req[value][element])) ? console.log(`${element} is of object type`) : arrayName.push(config[element].errorMessage.typeError);
@@ -127,16 +128,18 @@ export default function (config) {
     return function (req: Request, res: Response, next: NextFunction) {
         const arrayName = [];
         const getKeys = Object.keys(config);
-        console.log(getKeys);
+        //console.log(getKeys);
         getKeys.forEach(element => {
-            console.log(element)
+            //console.log(element)
             config[element].in.map((value) => {
                 let inCount = 0;
-                if (!(isEmpty(req[value]))) {
-                    console.log(config[element].required);
+                if (!(isEmpty(req[value])) || !config[element].required) {
+                    //console.log(config[element].required);
                     if (!config[element].required){
+                        //console.log(req[value]);
                         if(!req[value][element]){
                         req[value][element] = config[element].default;
+                       // console.log(req[value][element])
                         }
                         else{
                             console.log(`${element} is there`);

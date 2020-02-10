@@ -20,8 +20,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "ID should be of type string",
+                    message: "ID should be of type string",
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -51,8 +51,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "Name should be of type string",
+                    message: "Name should be of type string",
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -76,8 +76,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "ID should be of type number",
+                    message: "ID should be of type number",
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -105,8 +105,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "skip should be of type number",
+                    message: "skip should be of type number",
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -158,8 +158,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "ID should be of type string",
+                    message: "ID should be of type string",
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -183,8 +183,8 @@ const validation = {
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: "dataToUpadte should be of type object",
+                    message: "dataToUpdate should be of type object",
                     timestamp: new Date(),
                     status: 500,
                 }

@@ -32,7 +32,7 @@ class UserController {
 
     }
     catch(err){
-
+        
     }
     };
 
@@ -68,7 +68,7 @@ class UserController {
         })
     }
     catch(err){
-
+         
     }
     };
     delete = (req: Request, res: Response) => {
