@@ -31,16 +31,12 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
         }
         userRepository.findone({ _id: id, emails:email })
             .then(data => {
-                if (!data) {
-                    next({
-                        status: 403,
-                        error: 'Unauthorized Access',
-                        message: 'Unauthorized Access',
-                    }) 
-                }
-
                 req.user = data;
-            }).then(()=>{
+                
+            }).catch(err => next({status: 403,
+                error: 'Unauthorized Access',
+                message: 'Invalid User',
+            })).then(()=>{
         if (!hasPermission(module, decodeUser['role'], permissionType)) {
             next({
                 status: 403,

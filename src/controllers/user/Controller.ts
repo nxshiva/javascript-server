@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { UserRepository } from './../../repositories/user/UserRepository'
 import SystemResponse from '../../libs/SystemResponse'
 import IRequest from './../../libs/routes/IRequest'
@@ -15,6 +15,11 @@ class UserController {
         }
         UserController.instance = new UserController();
         return UserController.instance;
+    }
+
+    me = (req: IRequest, res: Response , next: NextFunction) => {
+        console.log("Inside me routes");
+        res.send(req.user);
     }
 
     create = (req: Request, res: Response) => {

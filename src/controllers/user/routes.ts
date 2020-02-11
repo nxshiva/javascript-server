@@ -16,9 +16,6 @@ userRouter.delete('/user/:id', authMiddleware('getUser','read'), validationHandl
 
 
 
-userRouter.route('/me')
-.get(authMiddleware('getUser','read'),(req:IRequest,res)=>{
-    console.log("Inside routes",req.user)
-    res.send(req.user)
-})
+userRouter.route('/me').get(authMiddleware('getUser','read'),userController.me);
+
 export default userRouter;
