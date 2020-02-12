@@ -3,12 +3,13 @@
  class UserSchema extends mongoose.Schema {
      constructor(options){
          const userSchema = {
-            id: String,
+            _id: String,
             name: String,
             address: String,
             emails: String,
             dob: Date,
             mobileNumber: Number,
+            role: String,
             hobbies: [String]
          }
          super(userSchema, options)
