@@ -8,6 +8,7 @@ interface IVersionableDocument extends mongoose.Document {
     updatedAt: Date;
     updatedBy: string;
     originalID: string;
+    password: string;
 }
 
 export default IVersionableDocument;

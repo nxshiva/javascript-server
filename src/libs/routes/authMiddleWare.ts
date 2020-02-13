@@ -16,10 +16,11 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
 
 
         const decodeUser = jwt.verify(token, secretKey);
+        console.log(decodeUser)
         // console.log(decodeUser)
         // const id = decodeUser["id"];
-        const emails = decodeUser[ 'emails' ];
-        const originalID = decodeUser['originalID']
+        const emails = decodeUser[ 'email' ];
+        const originalID = decodeUser['id'];
         console.log(originalID);
         console.log(emails);
 

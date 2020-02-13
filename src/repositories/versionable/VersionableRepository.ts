@@ -35,7 +35,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         await this.modelTypes.findById(id).then(user => {
                 console.log(typeof user);
                 console.log(typeof data);
-                const updateData = Object.assign(user, data);
+                Object.assign(user, data);
                 //  console.log(merged);
                 // console.log(updateData);
                 this.updateAndCreate(user);
@@ -53,7 +53,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
             _id: id,
             createdBy: id,
             updatedAt: new Date(),
-            updatedBy: options.id,
+            updatedBy: id,
         };
         console.log(newObj);
         return await this.modelTypes.create(newObj);

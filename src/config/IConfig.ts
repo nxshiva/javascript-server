@@ -4,6 +4,7 @@ interface Iconfig {
     env: string;
     secretKey: string;
     mongoDBUri: string;
+    password: string;
 }
 
 
