@@ -34,7 +34,7 @@ class Server {
     }
 
     run = () => {
-        const { app, config: { port,  mongoDBUri} } = this;
+        const { app, config: { port, mongoDBUri } } = this;
 
         Database.open(mongoDBUri).then(() => {
             this.app.listen(this.config.port, (err) => {

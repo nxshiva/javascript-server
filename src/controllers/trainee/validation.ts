@@ -8,29 +8,29 @@ const validation = {
             in: ['body'],
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'ID is required',
+                    message: 'ID is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "ID should be of type string",
-                    message: "ID should be of type string",
+                    error: 'ID should be of type string',
+                    message: 'ID should be of type string',
                     timestamp: new Date(),
                     status: 500,
                 }
             },
             custom: function (value) {
-                console.log('Value', value); 
+                console.log('Value', value);
                 throw {
                     error: 'Error Occured', message: 'Message'
-                }
+                };
             }
         },
         name: {
@@ -39,20 +39,20 @@ const validation = {
             in: ['body'],
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'Name is required',
+                    message: 'Name is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "Name should be of type string",
-                    message: "Name should be of type string",
+                    error: 'Name should be of type string',
+                    message: 'Name should be of type string',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -64,20 +64,20 @@ const validation = {
             required: true,
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'ID is required',
+                    message: 'ID is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "ID should be of type number",
-                    message: "ID should be of type number",
+                    error: 'ID should be of type number',
+                    message: 'ID should be of type number',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -93,20 +93,20 @@ const validation = {
             in: ['query'],
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'Name is required',
+                    message: 'Name is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "skip should be of type number",
-                    message: "skip should be of type number",
+                    error: 'skip should be of type number',
+                    message: 'skip should be of type number',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -119,20 +119,20 @@ const validation = {
             in: ['query'],
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'limit is required',
+                    message: 'limit is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "Limit should be of type number",
-                    message: "Limit should be of type number",
+                    error: 'Limit should be of type number',
+                    message: 'Limit should be of type number',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -146,20 +146,20 @@ const validation = {
             in: ['body'],
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'ID is required',
+                    message: 'ID is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "ID should be of type string",
-                    message: "ID should be of type string",
+                    error: 'ID should be of type string',
+                    message: 'ID should be of type string',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -171,32 +171,32 @@ const validation = {
             isObject: true,
             errorMessage: {
                 Error: {
-                    error: "Name is required",
-                    message: "Name is required",
+                    error: 'dataToUpdate is required',
+                    message: 'dataToUpdate is required',
                     timestamp: new Date(),
                     status: 500,
                 },
                 regexError: {
-                    error: "Regex did not match",
-                    message: "Regex did not match",
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
                     timestamp: new Date(),
                     status: 500,
                 },
                 typeError: {
-                    error: "dataToUpadte should be of type object",
-                    message: "dataToUpdate should be of type object",
+                    error: 'dataToUpadte should be of type object',
+                    message: 'dataToUpdate should be of type object',
                     timestamp: new Date(),
                     status: 500,
                 }
             },
-            custom: function (dataToUpdate) { 
+            custom: function (dataToUpdate) {
                 console.log('Value', dataToUpdate);
                 throw {
                     error: 'Error Occured', message: 'Message'
-                }
+                };
             },
         }
     }
-}
+};
 
 export default validation;

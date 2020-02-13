@@ -14,8 +14,8 @@ export default class VersionableSchema extends mongoose.Schema {
             updatedBy: String,
             originalID: String
 
-        }
+        };
 
-        super({...schema, ...baseSchema}, options);
+        super({ ...schema, ...baseSchema }, options);
     }
 }

@@ -1,18 +1,18 @@
 import * as mongoose from 'mongoose';
-import IRequest from './../../libs/routes/IRequest'
+import IRequest from './../../libs/routes/IRequest';
 
-export default class VersionableRepository<D extends mongoose.Document, M extends mongoose.Model<D>>{
+export default class VersionableRepository<D extends mongoose.Document, M extends mongoose.Model<D>> {
     private modelTypes: M;
 
-    constructor(modelType){
+    constructor(modelType) {
         this.modelTypes = modelType;
     }
 
-    public static generateObjectId(){
+    public static generateObjectId() {
         return String(mongoose.Types.ObjectId());
     }
 
-    public async count(): Promise<number>{
+    public async count(): Promise<number> {
         return await this.modelTypes.countDocuments();
     }
 
@@ -20,31 +20,29 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         const id = VersionableRepository.generateObjectId();
         return await this.modelTypes.create({
             ...options,
-            _id:id,
+            _id: id,
             originalID: id,
             createdBy: id
         });
     }
 
-    public async findOne(options): Promise<D>{
+    public async findOne(options): Promise<D> {
        return await this.modelTypes.findOne(options);
     }
 
-    public async update(id, data){
+    public async update(id, data) {
 
         await this.modelTypes.findById(id).then(user => {
-                
                 console.log(typeof user);
                 console.log(typeof data);
-                const updateData = Object.assign(user,data);
-                //console.log(merged);
-                //console.log(updateData);
+                const updateData = Object.assign(user, data);
+                //  console.log(merged);
+                // console.log(updateData);
                 this.updateAndCreate(user);
             }).catch(error => {
-                throw error 
-            });            
-        
-        return await this.modelTypes.update(id, { deletedBy: id, deletedAt:new Date() });
+                throw error;
+            });
+        return await this.modelTypes.update(id, { deletedBy: id, deletedAt: new Date() });
     }
 
     public async updateAndCreate(options) {
@@ -52,17 +50,17 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         const id = VersionableRepository.generateObjectId();
         const newObj = {
             ...options.toObject(),
-            _id:id,
+            _id: id,
             createdBy: id,
-            updatedAt:new Date(),
-            updatedBy:options.id,
+            updatedAt: new Date(),
+            updatedBy: options.id,
         };
-        console.log(newObj)
+        console.log(newObj);
         return await this.modelTypes.create(newObj);
     }
 
     public async delete(id) {
-    return await this.modelTypes.update(id, { deletedBy: id, deletedAt:new Date() });
+    return await this.modelTypes.update(id, { deletedBy: id, deletedAt: new Date() });
     }
 
     public async list(data): Promise<any> {

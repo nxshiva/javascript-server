@@ -1,8 +1,8 @@
  import * as mongoose from 'mongoose';
- import VersionableSchema from './../versionable/VersionableSchema'
+ import VersionableSchema from './../versionable/VersionableSchema';
 
  class UserSchema extends VersionableSchema {
-     constructor(options){
+     constructor(options) {
          const userSchema = {
             _id: String,
             name: String,
@@ -12,8 +12,8 @@
             mobileNumber: Number,
             role: String,
             hobbies: [String]
-         }
-         super(userSchema, options)
+         };
+         super(userSchema, options);
      }
  }
 
