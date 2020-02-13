@@ -34,7 +34,7 @@ class Server {
     }
 
     run = () => {
-        const { app, config: { port,  mongoDBUri} } = this;
+        const { app, config: { port, mongoDBUri } } = this;
 
         Database.open(mongoDBUri).then(() => {
             this.app.listen(this.config.port, (err) => {
@@ -43,10 +43,10 @@ class Server {
                     throw err;
                 }
                 console.log('App is running successfully on port ' + port);
-                //Database.disconnect();
+                // Database.disconnect();
             });
 
-        })
+        });
     }
 
     setupRoutes = () => {

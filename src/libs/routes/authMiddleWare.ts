@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import config from './../../config/configuration';
-import hasPermission from './permission'
+import hasPermission from './permission';
 import { UserRepository } from './../../repositories/user/UserRepository';
 import IRequest from './IRequest';
 
@@ -10,42 +10,42 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
     try {
 
         const userRepository = new UserRepository();
-        console.log(":::::::::::AUTHMIDDLEWARE::::::::::::::::", module, permissionType);
+        console.log(':::::::::::AUTHMIDDLEWARE::::::::::::::::', module, permissionType);
         const token: string = req.headers.authorization;
         const { secretKey } = config;
 
 
         const decodeUser = jwt.verify(token, secretKey);
-        //console.log(decodeUser)
-        const id = decodeUser["id"];
-        const email = decodeUser["email"];
-        console.log(id);
-        console.log(email)
+        // console.log(decodeUser)
+        // const id = decodeUser["id"];
+        const emails = decodeUser[ 'emails' ];
+        const originalID = decodeUser['originalID']
+        console.log(originalID);
+        console.log(emails);
 
         if (!decodeUser) {
             next({
                 status: 403,
                 error: 'Unauthorized Access',
                 message: 'Unauthorized Access',
-            })
+            });
         }
-        userRepository.findone({ _id: id, emails:email })
+        userRepository.findone({ originalID, emails, deletedBy: undefined })
             .then(data => {
                 req.user = data;
-                
             }).catch(err => next({status: 403,
                 error: 'Unauthorized Access',
                 message: 'Invalid User',
-            })).then(()=>{
+            })).then(() => {
         if (!hasPermission(module, decodeUser['role'], permissionType)) {
             next({
                 status: 403,
                 error: 'Unauthorized Access',
                 message: 'Unauthorized Access',
-            })
+            });
         }
         next();
-            })
+            });
     }
     catch (error) {
         next({
@@ -54,4 +54,4 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
             message: error.message,
         });
     }
-}
+};
