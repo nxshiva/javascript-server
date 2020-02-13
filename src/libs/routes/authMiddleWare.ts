@@ -17,10 +17,11 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
 
         const decodeUser = jwt.verify(token, secretKey);
         //console.log(decodeUser)
-        const id = decodeUser["id"];
-        const email = decodeUser["email"];
-        console.log(id);
-        console.log(email)
+        //const id = decodeUser["id"];
+        const emails = decodeUser["emails"];
+        const originalID = decodeUser["originalID"]
+        console.log(originalID);
+        console.log(emails)
 
         if (!decodeUser) {
             next({
@@ -29,7 +30,7 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
                 message: 'Unauthorized Access',
             })
         }
-        userRepository.findone({ _id: id, emails:email })
+        userRepository.findone({ originalID, emails, deletedBy:null })
             .then(data => {
                 req.user = data;
                 

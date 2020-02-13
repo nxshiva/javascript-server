@@ -43,10 +43,10 @@ class Server {
                     throw err;
                 }
                 console.log('App is running successfully on port ' + port);
-                //Database.disconnect();
+                // Database.disconnect();
             });
 
-        })
+        });
     }
 
     setupRoutes = () => {

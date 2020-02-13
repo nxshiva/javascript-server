@@ -9,10 +9,10 @@ const userRouter = express.Router();
 
 
 userRouter.route('/')
-.get( authMiddleware('getUser','read'),validationHandler(validation.get),userController.list)
+.get( validationHandler(validation.get),userController.list)
 .post( authMiddleware('getUser','read'),validationHandler(validation.create),userController.create)
-.put( authMiddleware('getUser','read'),validationHandler(validation.update),userController.update);
-userRouter.delete('/user/:id', authMiddleware('getUser','read'), validationHandler(validation.delete), userController.delete);
+.put( validationHandler(validation.update),userController.update);
+userRouter.delete('/:id', validationHandler(validation.delete), userController.delete);
 
 
 

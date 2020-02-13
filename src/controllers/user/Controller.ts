@@ -28,7 +28,6 @@ class UserController {
         console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
         const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
-
         this.userRepository.create({
             emails, name, address, hobbies, dob, mobileNumber, role
         }).then(user => {
@@ -46,7 +45,7 @@ class UserController {
     list = (req: Request, res: Response) => {
         try{
         console.log(' :::::::::: Inside List Trainee :::::::: ');
-        this.userRepository.list().then(user => {
+        this.userRepository.list({ deletedAt:null }).then(user => {
             console.log(user);
             return SystemResponse.success(res, user, 'Users List');
         }).catch(error => {
@@ -61,15 +60,16 @@ class UserController {
         try{
         console.log(' :::::::::: Inside Update Trainee :::::::: ');
         const { id, dataToUpdate } = req.body;
+        console.log(req.body)
         //const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
         this.userRepository.update({ _id:id }, dataToUpdate).then(user => {
-            this.userRepository.findone({_id:id}).then(user => {
-                return SystemResponse.success(res, user, 'Updated user');
-            }).catch(error => {
-                throw error 
-            })
-            //return SystemResponse.success(res, user, 'trainee updated successfully');
+            // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
+            //     return SystemResponse.success(res, user, 'Updated user');
+            // }).catch(error => {
+            //     throw error 
+            // })
+            return SystemResponse.success(res, user, 'trainee updated successfully');
         }).catch(error => {
             throw error 
         })

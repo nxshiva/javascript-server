@@ -133,7 +133,7 @@ export default function (config) {
             //console.log(element)
             config[element].in.map((value) => {
                 let inCount = 0;
-                if (!(isEmpty(req[value])) || !config[element].required) {
+                if (!isEmpty(req[value]) || !config[element].required) {
                     //console.log(config[element].required);
                     if (!config[element].required){
                         //console.log(req[value]);
