@@ -1,38 +1,39 @@
- import * as mongoose from 'mongoose';
- import IUserModel from './IUserModel';
- import VersionableRepository from './../versionable/VersionableRepository';
+import * as mongoose from 'mongoose';
+import IUserModel from './IUserModel';
+import VersionableRepository from './../versionable/VersionableRepository';
 import { userModel } from './UserModel';
 
- export class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
+export class UserRepository extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
     private userModel: mongoose.Model<IUserModel>;
-     constructor() {
-         super(userModel);
-         this.userModel = userModel;
-     }
+    constructor() {
+        super(userModel);
+        this.userModel = userModel;
+    }
 
 
-     create = (data: any): Promise<IUserModel> => {
-          return super.create(data);
-     }
+    create = (data: any, userID ): Promise<any> => {
+        // console.log(data);
+        return super.create(userID, data);
+    }
 
-     count = () => {
-         return super.count();
-     }
+    count = () => {
+        return super.count();
+    }
 
-     findone = (query: any) => {
-         return super.findOne(query);
-     }
+    findone = (query: any) => {
+        return super.findOne(query);
+    }
 
-     update = (id: any, data: any) => {
-         return super.update(id, data);
-     }
+    update = (userID, id: any, data: any) => {
+        return super.update(userID, id, data);
+    }
 
-     list = (data: any) => {
-         return super.list(data);
-     }
+    list = (data: any) => {
+        return super.list(data);
+    }
 
-     delete = (id: any) => {
-         console.log(id);
-         return super.delete(id);
-     }
- }
+    delete = (id: any, userID) => {
+        console.log(id);
+        return super.delete(id, userID);
+    }
+}

@@ -29,7 +29,7 @@ class UserController {
         try {
         const { email, password } = req.body;
 
-        const user = await this.userRepository.findone({ emails: email });
+        const user = await this.userRepository.findone({ emails: email, deletedAt: undefined });
         console.log(user);
            if (!user) {
                next({
@@ -59,15 +59,16 @@ class UserController {
            }
     }
 
-    create = async (req: Request, res: Response, next: NextFunction) => {
+    create = (req: IRequest, res: Response, next: NextFunction) => {
         try {
 
             console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
             const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
-            await this.userRepository.create({
+            console.log("request", req.user);
+            this.userRepository.create({
                 emails, name, address, hobbies, dob, mobileNumber, role
-            }).then(user => {
+            }, req.user).then(user => {
                 return SystemResponse.success(res, user, 'trainee added successfully');
             }).catch(error => {
                 throw error;
@@ -103,14 +104,14 @@ class UserController {
             });
         }
     };
-    update = async (req: Request, res: Response, next: NextFunction) => {
+    update = async (req: IRequest, res: Response, next: NextFunction) => {
         try {
             console.log(' :::::::::: Inside Update Trainee :::::::: ');
             const { id, dataToUpdate } = req.body;
             console.log(req.body);
             // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
-            await this.userRepository.update({ _id: id }, dataToUpdate).then(user => {
+            await this.userRepository.update(req.user, { _id: id }, dataToUpdate).then(user => {
                 // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
                 //     return SystemResponse.success(res, user, 'Updated user');
                 // }).catch(error => {
@@ -130,12 +131,12 @@ class UserController {
             });
         }
     };
-    delete = async (req: Request, res: Response, next: NextFunction) => {
+    delete = async (req: IRequest, res: Response, next: NextFunction) => {
 
         try {
             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
             const { id } = req.params;
-            await this.userRepository.delete({ _id: id }).then(user => {
+            await this.userRepository.delete({ _id: id }, req.user ).then(user => {
                 console.log(user);
                 return SystemResponse.success(res, user, 'Users List');
             }).catch(error => {

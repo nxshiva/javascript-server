@@ -1,11 +1,11 @@
  import * as mongoose from 'mongoose';
- import VersionableSchema from './../versionable/VersionableSchema';
+ import VersionableSchema from '../versionable/VersionableSchema';
  import * as uniqueValidator from 'mongoose-unique-validator';
 
 
- class UserSchema extends VersionableSchema {
+ class TraineeSchema extends VersionableSchema {
      constructor(options) {
-         const userSchema = {
+         const traineeSchema = {
             _id: String,
             name: String,
             address: String,
@@ -15,8 +15,8 @@
             role: String,
             hobbies: [String]
          };
-         super(userSchema, options);
+         super(traineeSchema, options);
      }
  }
 
- export default UserSchema;
+ export default TraineeSchema;

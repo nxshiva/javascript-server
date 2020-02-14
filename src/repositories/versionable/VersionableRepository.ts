@@ -16,13 +16,14 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         return await this.modelTypes.countDocuments();
     }
 
-    public async create(options): Promise<D> {
+    public async create(userID, options): Promise<D> {
         const id = VersionableRepository.generateObjectId();
+        console.log(options);
         return await this.modelTypes.create({
             ...options,
             _id: id,
             originalID: id,
-            createdBy: id
+            createdBy: userID._id
         });
     }
 
@@ -30,37 +31,44 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
        return await this.modelTypes.findOne(options);
     }
 
-    public async update(id, data) {
+    public async update(userID, id, data) {
 
         await this.modelTypes.findById(id).then(user => {
                 console.log(typeof user);
                 console.log(typeof data);
                 Object.assign(user, data);
                 //  console.log(merged);
-                // console.log(updateData);
-                this.updateAndCreate(user);
+                // console.log(updateData)
+                const newObj = {
+                    ...user.toObject(),
+                    _id: id,
+                    createdBy: userID._id,
+                    updatedAt: new Date(),
+                    updatedBy: userID._id,
+                };
+                this.create(userID, newObj);
             }).catch(error => {
                 throw error;
             });
-        return await this.modelTypes.update(id, { deletedBy: id, deletedAt: new Date() });
+        return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
-    public async updateAndCreate(options) {
-        console.log(options);
-        const id = VersionableRepository.generateObjectId();
-        const newObj = {
-            ...options.toObject(),
-            _id: id,
-            createdBy: id,
-            updatedAt: new Date(),
-            updatedBy: id,
-        };
-        console.log(newObj);
-        return await this.modelTypes.create(newObj);
-    }
+    // public async updateAndCreate(userID, options) {
+    //     console.log(options);
+    //     const id = VersionableRepository.generateObjectId();
+    //     const newObj = {
+    //         ...options.toObject(),
+    //         _id: id,
+    //         createdBy: userID._id,
+    //         updatedAt: new Date(),
+    //         updatedBy: userID._id,
+    //     };
+    //     console.log(newObj);
+    //     return await this.modelTypes.create(newObj);
+    // }
 
-    public async delete(id) {
-    return await this.modelTypes.update(id, { deletedBy: id, deletedAt: new Date() });
+    public async delete(id, userID) {
+    return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
     public async list(data): Promise<any> {
