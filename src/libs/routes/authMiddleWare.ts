@@ -16,10 +16,11 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
 
 
         const decodeUser = jwt.verify(token, secretKey);
+        console.log(decodeUser);
         // console.log(decodeUser)
         // const id = decodeUser["id"];
-        const emails = decodeUser[ 'emails' ];
-        const originalID = decodeUser['originalID']
+        const emails = decodeUser[ 'email' ];
+        const originalID = decodeUser['id'];
         console.log(originalID);
         console.log(emails);
 
@@ -33,6 +34,7 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
         userRepository.findone({ originalID, emails, deletedBy: undefined })
             .then(data => {
                 req.user = data;
+                console.log(req.user);
             }).catch(err => next({status: 403,
                 error: 'Unauthorized Access',
                 message: 'Invalid User',

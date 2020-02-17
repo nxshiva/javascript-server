@@ -1,4 +1,7 @@
 import { UserRepository } from './../repositories/user/UserRepository';
+import * as bcrypt from 'bcrypt';
+import config from './../config/configuration';
+import * as mongoose from 'mongoose';
 
 const userRepository = new UserRepository();
 
@@ -9,21 +12,26 @@ export default () => {
         dob: new Date('12/27/1993'),
         emails: 'vinay@nodeexperts.com',
         mobileNumber: 9718223533,
-        role:"head-trainer",
+        role: 'head-trainer',
         hobbies: ['Touring']
     };
 
     userRepository.count().then((count) => {
         console.log('Count as users is', count);
 
-        if(!count) {
-            return userRepository.create(user)
-            .then((res) => {
-                console.log('User seeded successfully', res);
+        if (!count) {
+            // return userRepository.create(user)
+            // .then((res) => {
+                bcrypt.hash(config.password, 10, (err, hash) => {
+                // })
+                const id = undefined;
+                Object.assign(user, {password: hash});
+                console.log('User seeded successfully');
+                return userRepository.create(user, {_id: id});
             });
         }
 
-        console.log('User already seeded')
+        console.log('User already seeded');
     })
     .catch((err) => console.log(err));
-}
+};

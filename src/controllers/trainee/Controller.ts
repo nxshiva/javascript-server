@@ -1,7 +1,17 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import { UserRepository } from './../../repositories/user/UserRepository';
+import SystemResponse from '../../libs/SystemResponse';
+import IRequest from './../../libs/routes/IRequest';
+import * as bcrypt from 'bcrypt';
+import config from './../../config/configuration';
+import * as jwt from 'jsonwebtoken';
 
 class TraineeController {
     static instance: TraineeController;
+    static userRepository: UserRepository;
+
+    userRepository = new UserRepository();
+
     static getInstance = () => {
         if (TraineeController.instance) {
             return TraineeController.instance;
@@ -10,64 +20,162 @@ class TraineeController {
         return TraineeController.instance;
     }
 
-    create = (req: Request, res: Response) => {
-        console.log(' :::::::::: Inside Create Trainee :::::::: ');
-        res.send({
-            status: 'OK',
-            message: 'Trainee added successfully',
-            data: {
-                id: 231,
-                name: 'Shiva Sharma',
-                address: 'Noida'
-            }
-        });
+    // me = (req: IRequest, res: Response, next: NextFunction) => {
+    //     console.log('Inside me routes');
+    //     res.send(req.user);
+    // }
+
+    // login = async(req: IRequest, res: Response, next: NextFunction) => {
+    //     try {
+    //     const { email, password } = req.body;
+
+    //     const user = await this.userRepository.findone({ emails: email, deletedAt: undefined });
+    //     console.log(user);
+    //        if (!user) {
+    //            next({
+    //                error: 'User Not Found',
+    //                status: 404
+    //            });
+    //         }
+    //         const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    //         console.log(isPasswordCorrect);
+
+    //            if (!isPasswordCorrect) {
+    //                return next({
+    //                 error: 'Password does not match',
+    //                 status: 422
+    //                });
+    //            }
+    //            const token = jwt.sign({ email: user.emails, id: user.originalID, role: user.role }, config.secretKey);
+    //            console.log(token);
+    //            res.status(200).send({ message: 'Login Successfully', data: token, status: 'success'});
+    //        }
+    //      catch (err) {
+    //            next({
+    //             error: 'Login Unsuccessfully',
+    //             status: 422
+    //            });
+    //        }
+    // }
+
+    create = (req: IRequest, res: Response, next: NextFunction) => {
+        try {
+
+            console.log(' :::::::::: Inside Create Trainee :::::::: ');
+
+            let { emails, name, address, hobbies, dob, mobileNumber, password} = req.body;
+            console.log('request', req.user);
+            bcrypt.hash(password, 10, (err, hash) => {
+                // Object.assign(user, {password: hash});
+                password = hash;
+                // console.log(password);
+                this.userRepository.create({ emails, name, address, hobbies, dob, mobileNumber, password}, req.user).then(user => {
+                    if (!user) {
+                        return next({
+                            error: 'User creation failed',
+                                message: 'User creation failed',
+                                timestamp: new Date(),
+                                status: 500,
+                        });
+                       }
+                       console.log(user);
+                       return SystemResponse.success(res, user, 'trainee added successfully');
+                });
+                // console.log(user);
+            });
+        }
+        catch (err) {
+            return next({
+                error: err.message,
+                    message: err.message,
+                    timestamp: new Date(),
+                    status: 500,
+            });
+        }
     };
 
-    list = (req: Request, res: Response) => {
-        console.log(' :::::::::: Inside List Trainee :::::::: ');
-        res.send({
-            status: 'OK',
-            message: 'All trainees',
-            data: [{
-                id: 231,
-                name: 'Shiva Sharma',
-                address: 'Noida'
-            },
-            {
-                id: 229,
-                name: 'Vibhor Garg',
-                address: 'Noida'
-            },
-            {
-                id: 232,
-                name: 'Fareed',
-                address: 'Noida'
-            }]
-        });
+    list = async(req: Request, res: Response, next: NextFunction) => {
+        try {
+            console.log(' :::::::::: Inside List Trainee :::::::: ');
+           const user = await this.userRepository.list({ deletedAt: undefined });
+           if (!user) {
+            return next({
+                error: 'No user found',
+                    message: 'No user found',
+                    timestamp: new Date(),
+                    status: 500,
+            });
+           }
+                return SystemResponse.success(res, user, 'Users List');
+        }
+        catch (err) {
+            return next({
+                error: err.message,
+                    message: err.message,
+                    timestamp: new Date(),
+                    status: 500,
+            });
+        }
     };
-    update = (req: Request, res: Response) => {
-        console.log(' :::::::::: Inside Update Trainee :::::::: ');
-        res.send({
-            status: 'OK',
-            message: 'Trainee updated successfully',
-            data: {
-                id: 231,
-                name: 'Shiva Sharma',
-                address: 'Noida'
-            }
-        });
+    update = async (req: IRequest, res: Response, next: NextFunction) => {
+        try {
+            console.log(' :::::::::: Inside Update Trainee :::::::: ');
+            const { id, dataToUpdate } = req.body;
+            // console.log(req.body);
+            // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
+
+           const user = await this.userRepository.update(req.user, { _id: id }, dataToUpdate);
+                // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
+                //     return SystemResponse.success(res, user, 'Updated user');
+                // }).catch(error => {
+                //     throw error
+                // })
+                if (!user) {
+                    return next({
+                        error: 'User update failed',
+                            message: 'User update failed',
+                            timestamp: new Date(),
+                            status: 500,
+                    });
+                   }
+                   console.log(user);
+                return SystemResponse.success(res, user, 'trainee updated successfully');
+        }
+        catch (err) {
+            return next({
+                error: err.message,
+                    message: err.message,
+                    timestamp: new Date(),
+                    status: 500,
+            });
+        }
     };
-    delete = (req: Request, res: Response) => {
-        console.log(' :::::::::: Inside Delete Trainee :::::::: ');
-        res.send({
-            status: 'OK',
-            message: 'Trainee deleted successfully',
-            data: {
-                id: 231,
-                name: 'Shiva Sharma',
-                address: 'Noida'
-            }
-        });
+    delete = async (req: IRequest, res: Response, next: NextFunction) => {
+
+        try {
+            console.log(' :::::::::: Inside Delete Trainee :::::::: ');
+            const { id } = req.params;
+           const user = await this.userRepository.delete({ _id: id }, req.user );
+           if (!user) {
+            return next({
+                error: 'User delete failed',
+                    message: 'User delete failed',
+                    timestamp: new Date(),
+                    status: 500,
+            });
+           }
+                console.log(user);
+                return SystemResponse.success(res, user, 'Users List');
+        }
+        catch (err) {
+            return next({
+                error: err.message,
+                    message: err.message,
+                    timestamp: new Date(),
+                    status: 500,
+            });
+        }
     };
 }
 

@@ -1,5 +1,7 @@
  import * as mongoose from 'mongoose';
  import VersionableSchema from './../versionable/VersionableSchema';
+ import * as uniqueValidator from 'mongoose-unique-validator';
+
 
  class UserSchema extends VersionableSchema {
      constructor(options) {
@@ -10,9 +12,14 @@
             emails: String,
             dob: Date,
             mobileNumber: Number,
-            role: String,
+            role: {
+                type: String,
+                default: 'Trainee'
+            },
+            password: String,
             hobbies: [String]
          };
+
          super(userSchema, options);
      }
  }

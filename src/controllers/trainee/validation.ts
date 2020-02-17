@@ -1,38 +1,6 @@
 const validation = {
     create:
     {
-        id:
-        {
-            required: true,
-            string: true,
-            in: ['body'],
-            errorMessage: {
-                Error: {
-                    error: 'ID is required',
-                    message: 'ID is required',
-                    timestamp: new Date(),
-                    status: 500,
-                },
-                regexError: {
-                    error: 'Regex did not match',
-                    message: 'Regex did not match',
-                    timestamp: new Date(),
-                    status: 500,
-                },
-                typeError: {
-                    error: 'ID should be of type string',
-                    message: 'ID should be of type string',
-                    timestamp: new Date(),
-                    status: 500,
-                }
-            },
-            custom: function (value) {
-                console.log('Value', value);
-                throw {
-                    error: 'Error Occured', message: 'Message'
-                };
-            }
-        },
         name: {
             required: true,
             regex: /^[A-Z][a-z]{2,30}$/,
@@ -53,6 +21,143 @@ const validation = {
                 typeError: {
                     error: 'Name should be of type string',
                     message: 'Name should be of type string',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        address: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'Address is required',
+                    message: 'Address is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'Address should be of type string',
+                    message: 'Address should be of type string',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        dob: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'dob is required',
+                    message: 'dob is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'dob should be of type string',
+                    message: 'Limit should be of type string',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        emails: {
+            required: true,
+            string: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'Email is required',
+                    message: 'Email is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'Email should be of type string',
+                    message: 'Email should be of type string',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        mobileNumber: {
+            required: true,
+            number: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'mobileNumber is required',
+                    message: 'mobileNumber is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'mobileNumber should be of type number',
+                    message: 'mobileNumber should be of type number',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        hobbies: {
+            required: true,
+            array: 'String',
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'hobbies is required',
+                    message: 'hobbies is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'hobbies should be of type array',
+                    message: 'hobbies should be of type array',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+        password: {
+            required: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'Password is required',
+                    message: 'Password is required',
                     timestamp: new Date(),
                     status: 500,
                 }
