@@ -20,60 +20,70 @@ class TraineeController {
         return TraineeController.instance;
     }
 
-    me = (req: IRequest, res: Response, next: NextFunction) => {
-        console.log('Inside me routes');
-        res.send(req.user);
-    }
+    // me = (req: IRequest, res: Response, next: NextFunction) => {
+    //     console.log('Inside me routes');
+    //     res.send(req.user);
+    // }
 
-    login = async(req: IRequest, res: Response, next: NextFunction) => {
-        try {
-        const { email, password } = req.body;
+    // login = async(req: IRequest, res: Response, next: NextFunction) => {
+    //     try {
+    //     const { email, password } = req.body;
 
-        const user = await this.userRepository.findone({ emails: email, deletedAt: undefined });
-        console.log(user);
-           if (!user) {
-               next({
-                   error: 'User Not Found',
-                   status: 404
-               });
-            }
-            const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    //     const user = await this.userRepository.findone({ emails: email, deletedAt: undefined });
+    //     console.log(user);
+    //        if (!user) {
+    //            next({
+    //                error: 'User Not Found',
+    //                status: 404
+    //            });
+    //         }
+    //         const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-            console.log(isPasswordCorrect);
+    //         console.log(isPasswordCorrect);
 
-               if (!isPasswordCorrect) {
-                   return next({
-                    error: 'Password does not match',
-                    status: 422
-                   });
-               }
-               const token = jwt.sign({ email: user.emails, id: user.originalID, role: user.role }, config.secretKey);
-               console.log(token);
-               res.status(200).send({ message: 'Login Successfully', data: token, status: 'success'});
-           }
-         catch (err) {
-               next({
-                error: 'Login Unsuccessfully',
-                status: 422
-               });
-           }
-    }
+    //            if (!isPasswordCorrect) {
+    //                return next({
+    //                 error: 'Password does not match',
+    //                 status: 422
+    //                });
+    //            }
+    //            const token = jwt.sign({ email: user.emails, id: user.originalID, role: user.role }, config.secretKey);
+    //            console.log(token);
+    //            res.status(200).send({ message: 'Login Successfully', data: token, status: 'success'});
+    //        }
+    //      catch (err) {
+    //            next({
+    //             error: 'Login Unsuccessfully',
+    //             status: 422
+    //            });
+    //        }
+    // }
 
     create = (req: IRequest, res: Response, next: NextFunction) => {
         try {
 
             console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
-            const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
-            console.log("request", req.user);
-            this.userRepository.create({
-                emails, name, address, hobbies, dob, mobileNumber, role
-            }, req.user).then(user => {
-                return SystemResponse.success(res, user, 'trainee added successfully');
-            }).catch(error => {
-                throw error;
+            let { emails, name, address, hobbies, dob, mobileNumber, password} = req.body;
+            console.log('request', req.user);
+            bcrypt.hash(password, 10, (err, hash) => {
+                // Object.assign(user, {password: hash});
+                password = hash;
+                // console.log(password);
+                this.userRepository.create({ emails, name, address, hobbies, dob, mobileNumber, password}, req.user).then(user => {
+                    if (!user) {
+                        return next({
+                            error: 'User creation failed',
+                                message: 'User creation failed',
+                                timestamp: new Date(),
+                                status: 500,
+                        });
+                       }
+                       console.log(user);
+                       return SystemResponse.success(res, user, 'trainee added successfully');
+                });
+                // console.log(user);
             });
-
         }
         catch (err) {
             return next({
@@ -88,12 +98,16 @@ class TraineeController {
     list = async(req: Request, res: Response, next: NextFunction) => {
         try {
             console.log(' :::::::::: Inside List Trainee :::::::: ');
-            await this.userRepository.list({ deletedAt: undefined }).then(user => {
-                console.log(user);
-                return SystemResponse.success(res, user, 'Users List');
-            }).catch(error => {
-                throw error;
+           const user = await this.userRepository.list({ deletedAt: undefined });
+           if (!user) {
+            return next({
+                error: 'No user found',
+                    message: 'No user found',
+                    timestamp: new Date(),
+                    status: 500,
             });
+           }
+                return SystemResponse.success(res, user, 'Users List');
         }
         catch (err) {
             return next({
@@ -108,19 +122,25 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Update Trainee :::::::: ');
             const { id, dataToUpdate } = req.body;
-            console.log(req.body);
+            // console.log(req.body);
             // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
-            await this.userRepository.update(req.user, { _id: id }, dataToUpdate).then(user => {
+           const user = await this.userRepository.update(req.user, { _id: id }, dataToUpdate);
                 // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
                 //     return SystemResponse.success(res, user, 'Updated user');
                 // }).catch(error => {
                 //     throw error
                 // })
+                if (!user) {
+                    return next({
+                        error: 'User update failed',
+                            message: 'User update failed',
+                            timestamp: new Date(),
+                            status: 500,
+                    });
+                   }
+                   console.log(user);
                 return SystemResponse.success(res, user, 'trainee updated successfully');
-            }).catch(error => {
-                throw error;
-            });
         }
         catch (err) {
             return next({
@@ -136,12 +156,17 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
             const { id } = req.params;
-            await this.userRepository.delete({ _id: id }, req.user ).then(user => {
+           const user = await this.userRepository.delete({ _id: id }, req.user );
+           if (!user) {
+            return next({
+                error: 'User delete failed',
+                    message: 'User delete failed',
+                    timestamp: new Date(),
+                    status: 500,
+            });
+           }
                 console.log(user);
                 return SystemResponse.success(res, user, 'Users List');
-            }).catch(error => {
-                throw error;
-            });
         }
         catch (err) {
             return next({

@@ -12,8 +12,7 @@ export default class VersionableSchema extends mongoose.Schema {
             deletedBy: String,
             createdBy: String,
             updatedBy: String,
-            originalID: String,
-            password: String
+            originalID: String
 
         };
 

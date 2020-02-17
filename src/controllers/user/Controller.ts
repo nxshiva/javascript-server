@@ -59,99 +59,118 @@ class UserController {
            }
     }
 
-    create = (req: IRequest, res: Response, next: NextFunction) => {
-        try {
+//     create = async (req: IRequest, res: Response, next: NextFunction) => {
+//         try {
 
-            console.log(' :::::::::: Inside Create Trainee :::::::: ');
+//             console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
-            const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
-            console.log("request", req.user);
-            this.userRepository.create({
-                emails, name, address, hobbies, dob, mobileNumber, role
-            }, req.user).then(user => {
-                return SystemResponse.success(res, user, 'trainee added successfully');
-            }).catch(error => {
-                throw error;
-            });
+//             const { emails, name, address, hobbies, dob, mobileNumber, role } = req.body;
+//             console.log('request', req.user);
+//            const user = this.userRepository.create({ emails, name, address, hobbies, dob, mobileNumber, role}, req.user);
+//            if (!user) {
+//             return next({
+//                 error: 'User creation failed',
+//                     message: 'User creation failed',
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//            }
+//            return SystemResponse.success(res, user, 'trainee added successfully');
 
-        }
-        catch (err) {
-            return next({
-                error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
-            });
-        }
-    };
+//         }
+//         catch (err) {
+//             return next({
+//                 error: err.message,
+//                     message: err.message,
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//         }
+//     };
 
-    list = async(req: Request, res: Response, next: NextFunction) => {
-        try {
-            console.log(' :::::::::: Inside List Trainee :::::::: ');
-            await this.userRepository.list({ deletedAt: undefined }).then(user => {
-                console.log(user);
-                return SystemResponse.success(res, user, 'Users List');
-            }).catch(error => {
-                throw error;
-            });
-        }
-        catch (err) {
-            return next({
-                error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
-            });
-        }
-    };
-    update = async (req: IRequest, res: Response, next: NextFunction) => {
-        try {
-            console.log(' :::::::::: Inside Update Trainee :::::::: ');
-            const { id, dataToUpdate } = req.body;
-            console.log(req.body);
-            // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
+//     list = async(req: Request, res: Response, next: NextFunction) => {
+//         try {
+//             console.log(' :::::::::: Inside List Trainee :::::::: ');
+//            const user = await this.userRepository.list({ deletedAt: undefined });
+//            if (!user) {
+//             return next({
+//                 error: 'No user found',
+//                     message: 'No user found',
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//            }
+//                 return SystemResponse.success(res, user, 'Users List');
+//         }
+//         catch (err) {
+//             return next({
+//                 error: err.message,
+//                     message: err.message,
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//         }
+//     };
+//     update = async (req: IRequest, res: Response, next: NextFunction) => {
+//         try {
+//             console.log(' :::::::::: Inside Update Trainee :::::::: ');
+//             const { id, dataToUpdate } = req.body;
+//             console.log(req.body);
+//             // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
-            await this.userRepository.update(req.user, { _id: id }, dataToUpdate).then(user => {
-                // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
-                //     return SystemResponse.success(res, user, 'Updated user');
-                // }).catch(error => {
-                //     throw error
-                // })
-                return SystemResponse.success(res, user, 'trainee updated successfully');
-            }).catch(error => {
-                throw error;
-            });
-        }
-        catch (err) {
-            return next({
-                error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
-            });
-        }
-    };
-    delete = async (req: IRequest, res: Response, next: NextFunction) => {
+//            const user = await this.userRepository.update(req.user, { _id: id }, dataToUpdate);
+//                 // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
+//                 //     return SystemResponse.success(res, user, 'Updated user');
+//                 // }).catch(error => {
+//                 //     throw error
+//                 // })
+//                 if (!user) {
+//                     return next({
+//                         error: 'User update failed',
+//                             message: 'User update failed',
+//                             timestamp: new Date(),
+//                             status: 500,
+//                     });
+//                    }
+//                    console.log(user);
+//                 return SystemResponse.success(res, user, 'trainee updated successfully');
+//         }
+//         catch (err) {
+//             return next({
+//                 error: err.message,
+//                     message: err.message,
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//         }
+//     };
+//     delete = async (req: IRequest, res: Response, next: NextFunction) => {
 
-        try {
-            console.log(' :::::::::: Inside Delete Trainee :::::::: ');
-            const { id } = req.params;
-            await this.userRepository.delete({ _id: id }, req.user ).then(user => {
-                console.log(user);
-                return SystemResponse.success(res, user, 'Users List');
-            }).catch(error => {
-                throw error;
-            });
-        }
-        catch (err) {
-            return next({
-                error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
-            });
-        }
-    };
+//         try {
+//             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
+//             const { id } = req.params;
+//            const user = await this.userRepository.delete({ _id: id }, req.user );
+//            if (!user) {
+//             return next({
+//                 error: 'User delete failed',
+//                     message: 'User delete failed',
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//            }
+//                 console.log(user);
+//                 return SystemResponse.success(res, user, 'Users List');
+//         }
+//         catch (err) {
+//             return next({
+//                 error: err.message,
+//                     message: err.message,
+//                     timestamp: new Date(),
+//                     status: 500,
+//             });
+//         }
+//     };
+// }
 }
 
 export default UserController.getInstance();

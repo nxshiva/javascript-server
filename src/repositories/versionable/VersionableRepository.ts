@@ -18,6 +18,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
 
     public async create(userID, options): Promise<D> {
         const id = VersionableRepository.generateObjectId();
+        console.log('**************************');
         console.log(options);
         return await this.modelTypes.create({
             ...options,
@@ -32,21 +33,17 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public async update(userID, id, data) {
-
-        await this.modelTypes.findById(id).then(user => {
-                console.log(typeof user);
-                console.log(typeof data);
-                Object.assign(user, data);
-                //  console.log(merged);
-                // console.log(updateData)
+         this.modelTypes.findById(id).then(user => {
+                 Object.assign(user, data);
+                const newid = VersionableRepository.generateObjectId();
                 const newObj = {
                     ...user.toObject(),
-                    _id: id,
+                    _id: newid,
                     createdBy: userID._id,
                     updatedAt: new Date(),
                     updatedBy: userID._id,
                 };
-                this.create(userID, newObj);
+                this.modelTypes.create(newObj);
             }).catch(error => {
                 throw error;
             });

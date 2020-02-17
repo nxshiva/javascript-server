@@ -12,9 +12,14 @@
             emails: String,
             dob: Date,
             mobileNumber: Number,
-            role: String,
+            role: {
+                type: String,
+                default: 'Trainee'
+            },
+            password: String,
             hobbies: [String]
          };
+
          super(userSchema, options);
      }
  }
