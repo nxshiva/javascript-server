@@ -13,7 +13,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public async count(): Promise<number> {
-        return await this.modelTypes.countDocuments();
+        return await this.modelTypes.find({deletedAt: undefined}).count();
     }
 
     public async create(userID, options): Promise<D> {
@@ -33,7 +33,8 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public async update(userID, id, data) {
-         this.modelTypes.findById(id).then(user => {
+        const user = await this.modelTypes.findOne(id);
+             // console.log("hello",user);
                  Object.assign(user, data);
                 const newid = VersionableRepository.generateObjectId();
                 const newObj = {
@@ -44,9 +45,6 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
                     updatedBy: userID._id,
                 };
                 this.modelTypes.create(newObj);
-            }).catch(error => {
-                throw error;
-            });
         return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
@@ -56,7 +54,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     //     const newObj = {
     //         ...options.toObject(),
     //         _id: id,
-    //         createdBy: userID._id,
+    //         createdBy: userID._id
     //         updatedAt: new Date(),
     //         updatedBy: userID._id,
     //     };
@@ -65,11 +63,15 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     // }
 
     public async delete(id, userID) {
+        console.log(id);
     return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
-    public async list(data): Promise<any> {
-        return this.modelTypes.find(data);
+    public async list(data, limit, skip, sorts): Promise<any> {
+        if (sorts) {
+            return this.modelTypes.find(data).limit(limit).skip(skip).sort(sorts);
+        }
+        return this.modelTypes.find(data).limit(limit).skip(skip).sort({'updatedAt': 1});
     }
 
 }

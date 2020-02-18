@@ -19,8 +19,20 @@ const validation = {
                     status: 500,
                 }
             }
+        },
+        password: {
+            required: true,
+            in: ['body'],
+            errorMessage: {
+                Error: {
+                    error: 'Password is required',
+                    message: 'Password is required',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
         }
     }
-}
+};
 
 export default validation;

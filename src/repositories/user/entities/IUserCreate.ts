@@ -7,4 +7,5 @@ export default interface IUserCreate {
     mobileNumber: number;
     role: string;
     hobbies: string[];
+    password: string;
 }

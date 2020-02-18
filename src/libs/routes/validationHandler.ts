@@ -137,11 +137,11 @@ export default function (config) {
                     // console.log(config[element].required);
                     if (!config[element].required) {
                         // console.log(req[value]);
-                        if (!req[value][element]) {
+                        if (!req[value][element] && config[element].default) {
                         req[value][element] = config[element].default;
                        // console.log(req[value][element])
                         }
-                        else {
+                        else if (req[value][element]) {
                             console.log(`${element} is there`);
                             validate(config, req, res, next, value, element, arrayName);
                         }
