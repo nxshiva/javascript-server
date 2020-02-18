@@ -12,6 +12,14 @@ class TraineeController {
 
     userRepository = new UserRepository();
 
+    isEmpty = (obj) => {
+        for (const prop in obj) {
+            if (obj.hasOwnProperty(prop))
+                return false;
+        }
+        return true;
+    }
+
     static getInstance = () => {
         if (TraineeController.instance) {
             return TraineeController.instance;
@@ -59,28 +67,38 @@ class TraineeController {
     //        }
     // }
 
-    create = (req: IRequest, res: Response, next: NextFunction) => {
+    create = async (req: IRequest, res: Response, next: NextFunction) => {
         try {
 
             console.log(' :::::::::: Inside Create Trainee :::::::: ');
 
-            let { emails, name, address, hobbies, dob, mobileNumber, password} = req.body;
+            const { emails, name, address, hobbies, dob, mobileNumber, pass } = req.body;
+            const users = await this.userRepository.findone({ emails, deletedAt: undefined });
+            console.log(users);
+            if (users) {
+                return next({
+                    error: 'User already exist',
+                    message: 'User already exist',
+                    timestamp: new Date(),
+                    status: 500,
+                });
+            }
             console.log('request', req.user);
-            bcrypt.hash(password, 10, (err, hash) => {
+            bcrypt.hash(pass, 10, (err, hash) => {
                 // Object.assign(user, {password: hash});
-                password = hash;
+                const password = hash;
                 // console.log(password);
-                this.userRepository.create({ emails, name, address, hobbies, dob, mobileNumber, password}, req.user).then(user => {
+                this.userRepository.create({ emails, name, address, hobbies, dob, mobileNumber, password }, req.user).then(user => {
                     if (!user) {
                         return next({
                             error: 'User creation failed',
-                                message: 'User creation failed',
-                                timestamp: new Date(),
-                                status: 500,
+                            message: 'User creation failed',
+                            timestamp: new Date(),
+                            status: 500,
                         });
-                       }
-                       console.log(user);
-                       return SystemResponse.success(res, user, 'trainee added successfully');
+                    }
+                    console.log(user);
+                    return SystemResponse.success(res, user, 'trainee added successfully');
                 });
                 // console.log(user);
             });
@@ -88,33 +106,97 @@ class TraineeController {
         catch (err) {
             return next({
                 error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
+                message: err.message,
+                timestamp: new Date(),
+                status: 500,
             });
         }
     };
 
-    list = async(req: Request, res: Response, next: NextFunction) => {
+    list = async (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log(' :::::::::: Inside List Trainee :::::::: ');
-           const user = await this.userRepository.list({ deletedAt: undefined });
-           if (!user) {
-            return next({
-                error: 'No user found',
-                    message: 'No user found',
-                    timestamp: new Date(),
-                    status: 500,
-            });
-           }
-                return SystemResponse.success(res, user, 'Users List');
+            const { limit, skip, sorted} = req.query;
+           // console.log(typeof sorted);
+           // const sort = { sorted: 1}
+            // console.log(sort);
+            const counts = await this.userRepository.count();
+            const myMap = new Map();
+            myMap.set('TotalCount', counts);
+            if (req.query.name) {
+                if (req.query.email) {
+                    // console.log("hello");
+                    const user = await this.userRepository.list({ name: req.query.name, emails: req.query.email, deletedAt: undefined }, limit, skip);
+                    myMap.set('Users', user);
+                    console.log('********************', this.isEmpty(user));
+                    if (this.isEmpty(user)) {
+                        return next({
+                            error: 'No user found',
+                            message: 'No user found',
+                            timestamp: new Date(),
+                            status: 500,
+                        });
+                    }
+                    SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+                }
+                else {
+                    const user = await this.userRepository.list({ name: req.query.name, deletedAt: undefined }, limit, skip, {'emails': 1});
+                   // const counts = await this.userRepository.count();
+                   myMap.set('Users', user);
+                    if (this.isEmpty(user)) {
+                        return next({
+                            error: 'No user found',
+                            message: 'No user found',
+                            timestamp: new Date(),
+                            status: 500,
+                        });
+                    }
+                    SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+                }
+            }
+            else if (req.query.email) {
+                const user = await this.userRepository.list({ emails: req.query.email, deletedAt: undefined }, limit, skip);
+              //  const counts = await this.userRepository.count();
+              myMap.set('Users', user);
+                if (this.isEmpty(user)) {
+                    return next({
+                        error: 'No user found',
+                        message: 'No user found',
+                        timestamp: new Date(),
+                        status: 500,
+                    });
+                }
+                SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+            }
+            else {
+                const user = await this.userRepository.list({ deletedAt: undefined }, limit, skip, sorted);
+              //  const counts = await this.userRepository.count();
+              myMap.set('Users', user);
+              console.log('hello');
+              myMap.set('Users', user);
+              console.log(typeof myMap);
+                if (this.isEmpty(user)) {
+                    return next({
+                        error: 'No user found',
+                        message: 'No user found',
+                        timestamp: new Date(),
+                        status: 500,
+                    });
+                }
+                SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+            }
+            // const user = await this.userRepository.list({ deletedAt: undefined }, limit, skip);
+            // Object.assign(user, { count: counts });
+            // console.log(user);
+            // console.log(typeof counts);
+            // console.log(typeof user);
         }
         catch (err) {
             return next({
                 error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
+                message: err.message,
+                timestamp: new Date(),
+                status: 500,
             });
         }
     };
@@ -122,32 +204,21 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Update Trainee :::::::: ');
             const { id, dataToUpdate } = req.body;
+            console.log(id);
             // console.log(req.body);
             // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
-           const user = await this.userRepository.update(req.user, { _id: id }, dataToUpdate);
-                // this.userRepository.findone({_id:id, deletedAt:null}).then(user => {
-                //     return SystemResponse.success(res, user, 'Updated user');
-                // }).catch(error => {
-                //     throw error
-                // })
-                if (!user) {
-                    return next({
-                        error: 'User update failed',
-                            message: 'User update failed',
-                            timestamp: new Date(),
-                            status: 500,
-                    });
-                   }
-                   console.log(user);
-                return SystemResponse.success(res, user, 'trainee updated successfully');
+            const user = await this.userRepository.update(req.user, { originalID: id, deletedAt: undefined }, dataToUpdate);
+            const updated = await this.userRepository.findone({originalID: id, deletedAt: undefined});
+            return SystemResponse.success(res, updated, 'Updated user');
+
         }
         catch (err) {
             return next({
                 error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
+                message: err.message,
+                timestamp: new Date(),
+                status: 500,
             });
         }
     };
@@ -156,24 +227,24 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
             const { id } = req.params;
-           const user = await this.userRepository.delete({ _id: id }, req.user );
-           if (!user) {
-            return next({
-                error: 'User delete failed',
+            const user = await this.userRepository.delete({ originalID: id, deletedAt: undefined }, req.user);
+            if (!user) {
+                return next({
+                    error: 'User delete failed',
                     message: 'User delete failed',
                     timestamp: new Date(),
                     status: 500,
-            });
-           }
-                console.log(user);
-                return SystemResponse.success(res, user, 'Users List');
+                });
+            }
+            console.log(user);
+            return SystemResponse.success(res, user, 'Users List');
         }
         catch (err) {
             return next({
                 error: err.message,
-                    message: err.message,
-                    timestamp: new Date(),
-                    status: 500,
+                message: err.message,
+                timestamp: new Date(),
+                status: 500,
             });
         }
     };

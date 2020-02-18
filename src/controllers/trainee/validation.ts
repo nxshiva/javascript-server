@@ -70,7 +70,7 @@ const validation = {
                 },
                 typeError: {
                     error: 'dob should be of type string',
-                    message: 'Limit should be of type string',
+                    message: 'dob should be of type string',
                     timestamp: new Date(),
                     status: 500,
                 }
@@ -79,6 +79,7 @@ const validation = {
         emails: {
             required: true,
             string: true,
+            regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((successive.tech))$/,
             in: ['body'],
             errorMessage: {
                 Error: {
@@ -242,7 +243,51 @@ const validation = {
                     status: 500,
                 }
             }
-        }
+        },
+        name: {
+            required: false,
+            regex: /^[A-Z][a-z]{2,30}$/,
+            in: ['query'],
+            errorMessage: {
+                Error: {
+                    error: 'Name is required',
+                    message: 'Name is required',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                regexError: {
+                    error: 'Regex did not match',
+                    message: 'Regex did not match',
+                    timestamp: new Date(),
+                    status: 500,
+                },
+                typeError: {
+                    error: 'Name should be of type string',
+                    message: 'Name should be of type string',
+                    timestamp: new Date(),
+                    status: 500,
+                }
+            }
+        },
+            email: {
+                required: false,
+                regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((successive.tech))$/,
+                in: ['query'],
+                errorMessage: {
+                    Error: {
+                        error: 'Email is required',
+                        message: 'Email is required',
+                        timestamp: new Date(),
+                        status: 500,
+                    },
+                    regexError: {
+                        error: 'Regex did not match',
+                        message: 'Regex did not match',
+                        timestamp: new Date(),
+                        status: 500,
+                    }
+                }
+            }
     },
     update: {
         id: {
