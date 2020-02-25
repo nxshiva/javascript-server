@@ -6,6 +6,8 @@ import notFoundRoutes from './libs/routes/notFoundRoute';
 import { Request } from 'express';
 import mainRouter from './router';
 import Database from './libs/Database';
+import * as swaggerJsDoc from 'swagger-jsdoc';
+import * as swaggerUI from 'swagger-ui-express';
 
 
 class Server {
@@ -21,6 +23,29 @@ class Server {
         this.setupRoutes();
         return this;
     }
+
+    public initSwagger = () => {
+        const options = {
+        definition: {
+        info: {
+        title: 'Javascript-Server API',
+        version: '1.0.0',
+        },
+        securityDefinitions: {
+        Bearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'headers'
+        }
+        }
+        },
+        basePath: '/api',
+        swagger: '2.0',
+        apis: ['./dist/controllers/**/routes.js'],
+        };
+        const swaggerSpec = swaggerJsDoc(options);
+        return swaggerSpec;
+        }
 
     initBodyParser = () => {
         const { app } = this;
@@ -51,7 +76,7 @@ class Server {
 
     setupRoutes = () => {
         const { app } = this;
-
+        app.use('/swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
         this.app.get('/health-check', (req: express.Request, res: express.Response) => {
             console.log('Inside health check');
             res.send('I am OK');

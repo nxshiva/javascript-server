@@ -5,7 +5,7 @@ import hasPermission from './permission';
 import { UserRepository } from './../../repositories/user/UserRepository';
 import IRequest from './IRequest';
 
-export default (module, permissionType) => (req: IRequest, res: Response, next: NextFunction) => {
+export default (module, permissionType) => async (req: IRequest, res: Response, next: NextFunction) => {
 
     try {
 
@@ -31,23 +31,20 @@ export default (module, permissionType) => (req: IRequest, res: Response, next: 
                 message: 'Unauthorized Access',
             });
         }
-        userRepository.findone({ originalID, emails, deletedBy: undefined })
-            .then(data => {
-                req.user = data;
+       const user = await userRepository.findone({ originalID, emails, deletedAt: undefined });
+                req.user = user;
                 console.log(req.user);
-            }).catch(err => next({status: 403,
-                error: 'Unauthorized Access',
-                message: 'Invalid User',
-            })).then(() => {
+                console.log(module + " " +decodeUser['role'] + " " + permissionType );
+                console.log(hasPermission(module, decodeUser['role'], permissionType));
         if (!hasPermission(module, decodeUser['role'], permissionType)) {
-            next({
+           return next({
                 status: 403,
                 error: 'Unauthorized Access',
                 message: 'Unauthorized Access',
             });
         }
+        console.log("hello")
         next();
-            });
     }
     catch (error) {
         next({

@@ -21,15 +21,17 @@ export class UserRepository extends VersionableRepository<IUserModel, mongoose.M
     }
 
     findone = (query: any) => {
+        console.log(query);
         return super.findOne(query);
     }
 
-    update = (userID, id: any, data: any) => {
-        return super.update(userID, id, data);
+    update = (userID, condition: any, data: any) => {
+        return super.update(userID, condition, data);
     }
 
-    list = (data: any, limit, skip, sorts = undefined) => {
-        return super.list(data, limit, skip, sorts);
+    list = (limit, skip, sorts, data) => {
+       // console.log(data);
+        return super.list(limit, skip, sorts, data);
     }
 
     delete = (id: any, userID) => {
