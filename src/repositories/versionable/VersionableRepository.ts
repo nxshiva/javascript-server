@@ -32,8 +32,8 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
        return await this.modelTypes.findOne(options);
     }
 
-    public async update(userID, id, data) {
-        const user = await this.modelTypes.findOne(id);
+    public async update(userID, condition, data) {
+        const user = await this.modelTypes.findOne(condition);
              // console.log("hello",user);
                  Object.assign(user, data);
                 const newid = VersionableRepository.generateObjectId();
@@ -45,7 +45,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
                     updatedBy: userID._id,
                 };
                 this.modelTypes.create(newObj);
-        return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
+        return await this.modelTypes.update(condition, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
     // public async updateAndCreate(userID, options) {
@@ -67,11 +67,11 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
-    public async list(data, limit, skip, sorts): Promise<any> {
-        if (sorts) {
-            return this.modelTypes.find(data).limit(limit).skip(skip).sort(sorts);
-        }
-        return this.modelTypes.find(data).limit(limit).skip(skip).sort({'updatedAt': 1});
+    public async list(limit, skip, sorts = {'createdAt': -1}, data = {deletedAt: undefined}): Promise<any> {
+        console.log('data', data);
+        console.log('sorts', sorts);
+        console.log('hello');
+        return this.modelTypes.find(data).limit(limit).skip(skip).sort(sorts);
     }
 
 }

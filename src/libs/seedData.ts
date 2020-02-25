@@ -7,13 +7,13 @@ const userRepository = new UserRepository();
 
 export default () => {
     const user = {
-        name: 'Head Trainer',
-        address: 'Noida',
+        name: 'head trainer',
+        address: 'noida',
         dob: new Date('12/27/1993'),
-        emails: 'vinay@nodeexperts.com',
+        emails: 'vinay@successive.tech',
         mobileNumber: 9718223533,
         role: 'head-trainer',
-        hobbies: ['Touring']
+        hobbies: ['touring']
     };
 
     userRepository.count().then((count) => {

@@ -18,7 +18,7 @@ function isBoolean(val) {
 function validate(config, req, res, next, value, element, arrayName) {
 
     if (config[element].string) {
-        (isString(req[value][element])) ? console.log(`${element} is of string type`) : arrayName.push(config[element].errorMessage.typeError);
+        (isString(req[value][element])) ? (console.log(`${element} is of string type`), req[value][element] = req[value][element].toLowerCase()) : arrayName.push(config[element].errorMessage.typeError);
     }
     if (config[element].regex) {
          // console.log(config[element].regex);
@@ -143,12 +143,14 @@ export default function (config) {
                         }
                         else if (req[value][element]) {
                             console.log(`${element} is there`);
+                           // console.log('hello');
                             validate(config, req, res, next, value, element, arrayName);
                         }
                     }
                     else {
                         if (req[value][element]) {
                             console.log(`${element} is there`);
+                           // console.log('hello');
                             validate(config, req, res, next, value, element, arrayName);
                         }
                         else {

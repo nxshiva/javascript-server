@@ -8,9 +8,8 @@ import * as jwt from 'jsonwebtoken';
 
 class TraineeController {
     static instance: TraineeController;
-    static userRepository: UserRepository;
+    userRepository: UserRepository = new UserRepository();
 
-    userRepository = new UserRepository();
 
     isEmpty = (obj) => {
         for (const prop in obj) {
@@ -97,8 +96,9 @@ class TraineeController {
                             status: 500,
                         });
                     }
-                    console.log(user);
-                    return SystemResponse.success(res, user, 'trainee added successfully');
+                    console.log('user', user);
+                    console.log('hello');
+                    return SystemResponse.success(res, user, 'Trainee added successfully');
                 });
                 // console.log(user);
             });
@@ -116,80 +116,22 @@ class TraineeController {
     list = async (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log(' :::::::::: Inside List Trainee :::::::: ');
-            const { limit, skip, sorted} = req.query;
-           // console.log(typeof sorted);
-           // const sort = { sorted: 1}
-            // console.log(sort);
+            const { limit, skip, sorted, search } = req.query;
             const counts = await this.userRepository.count();
             const myMap = new Map();
             myMap.set('TotalCount', counts);
-            if (req.query.name) {
-                if (req.query.email) {
-                    // console.log("hello");
-                    const user = await this.userRepository.list({ name: req.query.name, emails: req.query.email, deletedAt: undefined }, limit, skip);
-                    myMap.set('Users', user);
-                    console.log('********************', this.isEmpty(user));
-                    if (this.isEmpty(user)) {
-                        return next({
-                            error: 'No user found',
-                            message: 'No user found',
-                            timestamp: new Date(),
-                            status: 500,
-                        });
-                    }
-                    SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
-                }
-                else {
-                    const user = await this.userRepository.list({ name: req.query.name, deletedAt: undefined }, limit, skip, {'emails': 1});
-                   // const counts = await this.userRepository.count();
-                   myMap.set('Users', user);
-                    if (this.isEmpty(user)) {
-                        return next({
-                            error: 'No user found',
-                            message: 'No user found',
-                            timestamp: new Date(),
-                            status: 500,
-                        });
-                    }
-                    SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
-                }
-            }
-            else if (req.query.email) {
-                const user = await this.userRepository.list({ emails: req.query.email, deletedAt: undefined }, limit, skip);
-              //  const counts = await this.userRepository.count();
-              myMap.set('Users', user);
-                if (this.isEmpty(user)) {
-                    return next({
-                        error: 'No user found',
-                        message: 'No user found',
-                        timestamp: new Date(),
-                        status: 500,
-                    });
-                }
-                SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+            if (search) {
+                const searching = search.split(':');
+                console.log(searching);
+                const user = await this.userRepository.list(limit, skip, sorted, { [searching[0]]: searching[1], deletedAt: undefined });
+                myMap.set('Users', user);
+                return SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }, 'Users List');
             }
             else {
-                const user = await this.userRepository.list({ deletedAt: undefined }, limit, skip, sorted);
-              //  const counts = await this.userRepository.count();
-              myMap.set('Users', user);
-              console.log('hello');
-              myMap.set('Users', user);
-              console.log(typeof myMap);
-                if (this.isEmpty(user)) {
-                    return next({
-                        error: 'No user found',
-                        message: 'No user found',
-                        timestamp: new Date(),
-                        status: 500,
-                    });
-                }
-                SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }  , 'Users List');
+                const user = await this.userRepository.list(limit, skip, sorted, search);
+                myMap.set('Users', user);
+                return SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }, 'Users List');
             }
-            // const user = await this.userRepository.list({ deletedAt: undefined }, limit, skip);
-            // Object.assign(user, { count: counts });
-            // console.log(user);
-            // console.log(typeof counts);
-            // console.log(typeof user);
         }
         catch (err) {
             return next({
@@ -205,11 +147,12 @@ class TraineeController {
             console.log(' :::::::::: Inside Update Trainee :::::::: ');
             const { id, dataToUpdate } = req.body;
             console.log(id);
+
             // console.log(req.body);
             // const { emails, name, address, hobbies, dob, mobileNumber } = dataToUpdate;
 
             const user = await this.userRepository.update(req.user, { originalID: id, deletedAt: undefined }, dataToUpdate);
-            const updated = await this.userRepository.findone({originalID: id, deletedAt: undefined});
+            const updated = await this.userRepository.findone({ originalID: id, deletedAt: undefined });
             return SystemResponse.success(res, updated, 'Updated user');
 
         }
@@ -227,6 +170,7 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
             const { id } = req.params;
+           // console.log(req.user);
             const user = await this.userRepository.delete({ originalID: id, deletedAt: undefined }, req.user);
             if (!user) {
                 return next({
@@ -237,7 +181,7 @@ class TraineeController {
                 });
             }
             console.log(user);
-            return SystemResponse.success(res, user, 'Users List');
+            return SystemResponse.success(res, user, 'Users deleted successfully');
         }
         catch (err) {
             return next({

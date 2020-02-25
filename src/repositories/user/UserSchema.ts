@@ -14,7 +14,7 @@
             mobileNumber: Number,
             role: {
                 type: String,
-                default: 'Trainee'
+                default: 'trainee'
             },
             password: String,
             hobbies: [String]

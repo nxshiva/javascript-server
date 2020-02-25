@@ -3,7 +3,8 @@ const validation = {
     {
         name: {
             required: true,
-            regex: /^[A-Z][a-z]{2,30}$/,
+            string: true,
+            regex: /([a-zA-Z])+ ?([a-zA-Z])+$/,
             in: ['body'],
             errorMessage: {
                 Error: {
@@ -152,7 +153,7 @@ const validation = {
                 }
             }
         },
-        password: {
+        pass: {
             required: true,
             in: ['body'],
             errorMessage: {
@@ -246,7 +247,8 @@ const validation = {
         },
         name: {
             required: false,
-            regex: /^[A-Z][a-z]{2,30}$/,
+            string: true,
+            regex: /([a-zA-Z])+ ?([a-zA-Z])+$/,
             in: ['query'],
             errorMessage: {
                 Error: {
@@ -271,6 +273,7 @@ const validation = {
         },
             email: {
                 required: false,
+                string: true,
                 regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((successive.tech))$/,
                 in: ['query'],
                 errorMessage: {

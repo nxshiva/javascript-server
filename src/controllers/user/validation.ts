@@ -3,6 +3,7 @@ const validation = {
     {
         email: {
             required: true,
+            string: true,
             regex: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((successive.tech))$/,
             in: ['body'],
             errorMessage: {
