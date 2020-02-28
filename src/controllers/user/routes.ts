@@ -33,9 +33,11 @@ const userRouter = express.Router();
 /**
  * @swagger
  *
- * /api/user/me:
+ * /user/me:
  *   get:
  *      description: Data of the User currently login.
+ *      tags:
+ *         - User
  *      security:
  *         - Bearer: []
  *      produces:
@@ -52,9 +54,11 @@ userRouter.route('/me').get(authMiddleware('getTrainee', 'read'), userController
 /**
  * @swagger
  *
- * /api/user/login:
+ * /user/login:
  *   post:
  *     description: Login Credentials
+ *     tags:
+ *       - User
  *     security:
  *       - Bearer: []
  *     produces:
