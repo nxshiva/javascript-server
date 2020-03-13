@@ -68,10 +68,9 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public async list(limit, skip, sorts = {'createdAt': -1}, data = {deletedAt: undefined}): Promise<any> {
-        console.log('data', data);
+        console.log('data', {...data});
         console.log('sorts', sorts);
-        console.log('hello');
-        return this.modelTypes.find(data).limit(limit).skip(skip).sort(sorts);
+        return this.modelTypes.find({...data}).limit(limit).skip(skip).sort(sorts);
     }
 
 }

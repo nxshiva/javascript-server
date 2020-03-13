@@ -18,6 +18,7 @@ function isBoolean(val) {
 function validate(config, req, res, next, value, element, arrayName) {
 
     if (config[element].string) {
+      console.log('check', req[value][element]);
         (isString(req[value][element])) ? (console.log(`${element} is of string type`), req[value][element] = req[value][element].toLowerCase()) : arrayName.push(config[element].errorMessage.typeError);
     }
     if (config[element].regex) {

@@ -30,7 +30,7 @@ export class UserRepository extends VersionableRepository<IUserModel, mongoose.M
     }
 
     list = (limit, skip, sorts, data) => {
-       // console.log(data);
+        console.log('check2', sorts);
         return super.list(limit, skip, sorts, data);
     }
 

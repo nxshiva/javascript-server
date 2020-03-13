@@ -34,7 +34,7 @@ export default (module, permissionType) => async (req: IRequest, res: Response, 
        const user = await userRepository.findone({ originalID, emails, deletedAt: undefined });
                 req.user = user;
                 console.log(req.user);
-                console.log(module + " " +decodeUser['role'] + " " + permissionType );
+                console.log(module + " " + decodeUser['role'] + " " + permissionType );
                 console.log(hasPermission(module, decodeUser['role'], permissionType));
         if (!hasPermission(module, decodeUser['role'], permissionType)) {
            return next({

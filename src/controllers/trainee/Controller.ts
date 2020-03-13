@@ -117,14 +117,17 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside List Trainee :::::::: ');
             const { limit, skip, sorted, search } = req.query;
+            console.log('check1', sorted);
             const counts = await this.userRepository.count();
             const myMap = new Map();
             myMap.set('TotalCount', counts);
             if (search) {
-                const searching = search.split(':');
-                console.log(searching);
-                const user = await this.userRepository.list(limit, skip, sorted, { [searching[0]]: searching[1], deletedAt: undefined });
-                myMap.set('Users', user);
+                // const searching = search.split(':');
+                // console.log(searching);
+                const user = await this.userRepository.list(limit, skip, sorted, { name: { $regex: search, $options: 'i' }, deletedAt: undefined });
+                const list = await this.userRepository.list(limit, skip, sorted, { emails: { $regex: search, $options: 'i' }, deletedAt: undefined });
+                const users = {...user, ...list };
+                myMap.set('Users', users);
                 return SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }, 'Users List');
             }
             else {
@@ -170,7 +173,6 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside Delete Trainee :::::::: ');
             const { id } = req.params;
-           // console.log(req.user);
             const user = await this.userRepository.delete({ originalID: id, deletedAt: undefined }, req.user);
             if (!user) {
                 return next({
