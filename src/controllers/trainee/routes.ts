@@ -31,7 +31,7 @@ TraineeRouter.route('/')
   *         address:
   *           type: string
   *           example: string
-  *         mobile_number:
+  *         mobileNumber:
   *           type: number
   *           example: number
   *         role:
@@ -43,7 +43,7 @@ TraineeRouter.route('/')
   *         hobbies:
   *           type: array
   *           example: [array]
-  *         email:
+  *         emails:
   *           type: string
   *           example: string
   *         password:
@@ -55,7 +55,7 @@ TraineeRouter.route('/')
   *       properties:
   *           _id:
   *             example: string
-  *           email:
+  *           emails:
   *             type: string
   *             example: string
   *           hobbies:
@@ -70,7 +70,7 @@ TraineeRouter.route('/')
   *           dob:
   *             type: Date
   *             example: date
-  *           mobile_number:
+  *           mobileNumber:
   *             type: number
   *             example: number
   *           role:
@@ -110,7 +110,7 @@ TraineeRouter.route('/')
   *           in: query
   *           required: false
   *           type: number
-  *         - name: sortBy
+  *         - name: sorted
   *           description: data to be sort by
   *           in: query
   *           required: false
@@ -130,7 +130,7 @@ TraineeRouter.route('/')
   *               status:
   *                 example: Ok
   *               message:
-  *                 example: 'Trainee List , No. of trainee: 4'
+  *                 example: 'Users List'
   *               count:
   *                 example: 4
   *               data:
@@ -143,7 +143,7 @@ TraineeRouter.route('/')
   *             $ref: '#/definitions/Unauthorized'
   */
 
-  .get(authMiddleWare('getUsers', 'write'), validationHandler(validation.get), TraineeController.list)
+  .get(authMiddleWare('getTrainee', 'read'), validationHandler(validation.get), TraineeController.list)
  /**
   * @swagger
   * definitions:
@@ -156,7 +156,7 @@ TraineeRouter.route('/')
   *         address:
   *           type: string
   *           example: string
-  *         mobile_number:
+  *         mobileNumber:
   *           type: number
   *           example: number
   *         role:
@@ -168,10 +168,10 @@ TraineeRouter.route('/')
   *         hobbies:
   *           type: array
   *           example: [array]
-  *         email:
+  *         emails:
   *           type: string
   *           example: string
-  *         password:
+  *         pass:
   *           type: string
   *           example: string
   *
@@ -189,13 +189,13 @@ TraineeRouter.route('/')
   *         address:
   *           type: string
   *           example: Delhi
-  *         mobile_number:
+  *         mobileNumber:
   *           type: number
   *           example: 7017202643
   *         dob:
   *           type: Date
   *           example: timestamp
-  *         email:
+  *         emails:
   *           type: string
   *           example: string
   *         role:
@@ -247,7 +247,7 @@ TraineeRouter.route('/')
   *           schema:
   *             $ref: '#/definitions/Unauthorized'
   */
-  .post(authMiddleWare('getUsers', 'write'), validationHandler(validation.create), TraineeController.create)
+  .post(authMiddleWare('getTrainee', 'write'), validationHandler(validation.create), TraineeController.create)
  /**
   * @swagger
   * definitions:
@@ -259,11 +259,11 @@ TraineeRouter.route('/')
   *         dataToUpdate:
   *           type: object
   *           example:
-  *            name:: string
+  *            name: string
   *            address: string
-  *            mobile_number: number
+  *            mobileNumber: number
   *            dob: date
-  *            email: string
+  *            emails: string
   *            role: string
   *     TraineeResponse:
   *       type: object
@@ -279,13 +279,13 @@ TraineeRouter.route('/')
   *         address:
   *           type: string
   *           example: Delhi
-  *         mobile_number:
+  *         mobileNumber:
   *           type: number
   *           example: number
   *         dob:
   *           type: Date
   *           example: timestamp
-  *         email:
+  *         emails:
   *           type: string
   *           example: string
   *         role:
@@ -338,7 +338,7 @@ TraineeRouter.route('/')
   *             schema:
   *               $ref: '#/definitions/Unauthorized'
   */
-  .put(authMiddleWare('getUsers', 'write'), validationHandler(validation.update), TraineeController.update);
+  .put(authMiddleWare('getTrainee', 'write'), validationHandler(validation.update), TraineeController.update);
  /**
   * @swagger
   *
@@ -356,13 +356,13 @@ TraineeRouter.route('/')
   *         address:
   *           type: string
   *           example: string
-  *         mobile_number:
+  *         mobileNumber:
   *           type: number
   *           example: number
   *         dob:
   *           type: Date
   *           example: Date
-  *         email:
+  *         emails:
   *           type: string
   *           example: string
   *         role:
@@ -413,6 +413,6 @@ TraineeRouter.route('/')
  *           schema:
  *             $ref: '#/definitions/Unauthorized'
  */
- TraineeRouter.delete('/trainee/:id', authMiddleWare('getUsers', 'write'), validationHandler(validation.delete), TraineeController.delete);
+ TraineeRouter.delete('/:id', authMiddleWare('getTrainee', 'write'), validationHandler(validation.delete), TraineeController.delete);
 
 export default TraineeRouter;

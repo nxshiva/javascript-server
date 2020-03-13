@@ -7,7 +7,7 @@ const userRepository = new UserRepository();
 
 export default () => {
     const user = {
-        name: 'head trainer',
+        name: 'head-trainer',
         address: 'noida',
         dob: new Date('12/27/1993'),
         emails: 'vinay@successive.tech',

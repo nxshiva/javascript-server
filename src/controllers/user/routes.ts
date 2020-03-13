@@ -18,7 +18,7 @@ const userRouter = express.Router();
  *             example: vinay@successive.tech
  *          password:
  *             type: string
- *             example: Trainer@123
+ *             example: Trainee@123
  *     Token:
  *       type: object
  *       properties:
