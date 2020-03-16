@@ -5,6 +5,7 @@ import IRequest from './../../libs/routes/IRequest';
 import * as bcrypt from 'bcrypt';
 import config from './../../config/configuration';
 import * as jwt from 'jsonwebtoken';
+import * as queryString from 'query-string';
 
 class TraineeController {
     static instance: TraineeController;
@@ -117,17 +118,20 @@ class TraineeController {
         try {
             console.log(' :::::::::: Inside List Trainee :::::::: ');
             const { limit, skip, sorted, search } = req.query;
-            console.log('check1', sorted);
             const counts = await this.userRepository.count();
             const myMap = new Map();
             myMap.set('TotalCount', counts);
             if (search) {
-                // const searching = search.split(':');
-                // console.log(searching);
-                const user = await this.userRepository.list(limit, skip, sorted, { name: { $regex: search, $options: 'i' }, deletedAt: undefined });
-                const list = await this.userRepository.list(limit, skip, sorted, { emails: { $regex: search, $options: 'i' }, deletedAt: undefined });
-                const users = {...user, ...list };
-                myMap.set('Users', users);
+                const inObject = queryString.parse(search);
+                const finalobj = Object.keys(inObject);
+                let searchData = {};
+                finalobj.forEach((key) => {
+                    searchData[key] = {$regex: `^${inObject[key]}`, $options: 'i'};
+                });
+                await searchData;
+                const final = {...searchData, deletedAt: undefined};
+                const user = await this.userRepository.list(limit, skip, sorted, final);
+                myMap.set('Users', user);
                 return SystemResponse.success(res, { ToatalCount: myMap.get('TotalCount'), Users: myMap.get('Users') }, 'Users List');
             }
             else {
