@@ -48,28 +48,13 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
         return await this.modelTypes.update(condition, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
-    // public async updateAndCreate(userID, options) {
-    //     console.log(options);
-    //     const id = VersionableRepository.generateObjectId();
-    //     const newObj = {
-    //         ...options.toObject(),
-    //         _id: id,
-    //         createdBy: userID._id
-    //         updatedAt: new Date(),
-    //         updatedBy: userID._id,
-    //     };
-    //     console.log(newObj);
-    //     return await this.modelTypes.create(newObj);
-    // }
-
     public async delete(id, userID) {
         console.log(id);
     return await this.modelTypes.update(id, { deletedBy: userID._id, deletedAt: new Date() });
     }
 
-    public async list(limit, skip, sorts = {'createdAt': -1}, data = {deletedAt: undefined}): Promise<any> {
-        console.log('data', data);
-        return this.modelTypes.find({...data}).limit(limit).skip(skip).sort(sorts).collation({locale: 'en'});
+    public async list(condition, projection, options): Promise<any> {
+        return this.modelTypes.find(condition, projection, options).collation({locale: 'en'});
     }
 
 }
