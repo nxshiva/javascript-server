@@ -29,8 +29,11 @@ export class UserRepository extends VersionableRepository<IUserModel, mongoose.M
         return super.update(userID, condition, data);
     }
 
-    list = (limit, skip, sorts, data) => {
-        return super.list(limit, skip, sorts, data);
+    list = (condition, projection, options) => {
+      console.log('condition', condition);
+      console.log('projection', projection);
+      console.log('options', options);
+        return super.list(condition, projection, options);
     }
 
     delete = (id: any, userID) => {

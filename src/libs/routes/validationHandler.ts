@@ -33,96 +33,11 @@ function validate(config, req, res, next, value, element, arrayName) {
         (isObject(req[value][element])) ? console.log(`${element} is of object type`) : arrayName.push(config[element].errorMessage.typeError);
     }
     if (config[element].boolean) {
-        (isBoolean(req[value][element])) ? console.log(`${element} is of  type`) : arrayName.push(config[element].errorMessage.typeError);
+        (isBoolean(req[value][element])) ? console.log(`${element} is of type boolean`) : arrayName.push(config[element].errorMessage.typeError);
     }
-    // if(config[element].custom){
-    //     //add tomorrow;
-    //     config[element].custom(req[value][element]);
-    // }
     if (config[element].array) {
-        if (Array.isArray(req[value][element])) {
-            const type = config[element].array;
-            console.log(type);
-            switch (type) {
-                case 'String':
-                    req[value][element].forEach(val => {
-                        if (!isString(val)) {
-                            arrayName.push({
-                                error: 'Array elements are not of string type',
-                                message: 'Array elements are not of string type',
-                                timestamp: new Date(),
-                                status: 500,
-                                });
-                        }
-                    });
-                  break;
-                case 'Number':
-                    req[value][element].forEach(val => {
-                        if (Number.isInteger(val)) {
-                            arrayName.push({
-                                error: 'Array elements are not of number type',
-                                message: 'Array elements are not of number type',
-                                timestamp: new Date(),
-                                status: 500,
-                                });
-                        }
-                    });
-                  break;
-                case 'Object':
-                    req[value][element].forEach(val => {
-                        if (!isObject(val)) {
-                            arrayName.push({
-                                error: 'Array elements are not of object type',
-                                message: 'Array elements are not of object type',
-                                timestamp: new Date(),
-                                status: 500,
-                                });
-                        }
-                    });
-                  break;
-                case 'Array':
-                    req[value][element].forEach(val => {
-                        if (!Array.isArray(val)) {
-                            arrayName.push({
-                                error: 'Array elements are not of array type',
-                                message: 'Array elements are not of array type',
-                                timestamp: new Date(),
-                                status: 500,
-                                });
-                        }
-                    });
-                  break;
-                case 'Boolean':
-                    req[value][element].forEach(val => {
-                        if (!isBoolean(val)) {
-                            arrayName.push({
-                                error: 'Array elements are not of boolean type',
-                                message: 'Array elements are not of boolean type',
-                                timestamp: new Date(),
-                                status: 500,
-                                });
-                        }
-                    });
-                  break;
-                default:
-                    arrayName.push({
-                    error: `Please define the type of array in: ${config[element]}`,
-                    message: `Please define the type of array in: ${config[element]}`,
-                    timestamp: new Date(),
-                    status: 500,
-                    });
-              }
-        }
-        else {
-            arrayName.push({
-                error: `Please enter the hobbies in array in: ${req[value][element]}`,
-                message: `Please enter the array in: ${req[value][element]}`,
-                timestamp: new Date(),
-                status: 500,
-                });
-        }
-    }
-
+      (Array.isArray(req[value][element])) ? console.log(`${element} is of type array`) : arrayName.push(config[element].errorMessage.typeError);
+  }
 }
 
 export default function (config) {
