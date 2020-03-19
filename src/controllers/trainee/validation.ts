@@ -130,7 +130,7 @@ const validation = {
         },
         hobbies: {
             required: true,
-            array: 'String',
+            array: true,
             in: ['body'],
             errorMessage: {
                 Error: {
